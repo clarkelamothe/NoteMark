@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -14,8 +13,8 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
-import com.clarkelamothe.notemark.core.presentation.local.ProvideOrientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
 @Composable
 fun OnboardingScreenRoot(
@@ -40,7 +39,12 @@ fun OnboardingScreenRoot(
                 ),
             onLoginClick = {},
             onGetStartedClick = {},
-            header = { OnboardingHeader() }
+            header = {
+                AuthHeader(
+                    title = "Your Own Collection of Notes",
+                    subtitle = "Capture your thoughts and ideas."
+                )
+            }
         )
 
         Orientation.PHONE_LANDSCAPE -> OnboardingScreenLandscape(
@@ -83,7 +87,13 @@ fun OnboardingScreenRoot(
                     ),
                 onLoginClick = {},
                 onGetStartedClick = {},
-                header = { OnboardingHeader(alignment = TextAlign.Center) }
+                header = {
+                    AuthHeader(
+                        title = "Your Own Collection of Notes",
+                        subtitle = "Capture your thoughts and ideas.",
+                        alignment = TextAlign.Center
+                    )
+                }
             )
         }
 
@@ -116,37 +126,13 @@ fun OnboardingScreenRoot(
     }
 }
 
-@Composable
-private fun OnboardingHeader(
-    title: String = "Your Own Collection of Notes",
-    subtitle: String = "Capture your thoughts and ideas.",
-    alignment: TextAlign = TextAlign.Start
-) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        text = title,
-        textAlign = alignment,
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        text = subtitle,
-        textAlign = alignment,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-}
-
 @PreviewScreenSizes
 @Composable
 private fun OnboardingScreenPreview() {
     NoteMarkTheme {
-        ProvideOrientation {
-            OnboardingScreenRoot(
-                onLoginClick = {},
-                onGetStartedClick = {}
-            )
-        }
+        OnboardingScreenRoot(
+            onLoginClick = {},
+            onGetStartedClick = {}
+        )
     }
 }
