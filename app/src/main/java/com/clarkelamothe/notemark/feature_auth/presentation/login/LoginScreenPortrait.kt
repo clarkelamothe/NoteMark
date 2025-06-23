@@ -1,15 +1,11 @@
 package com.clarkelamothe.notemark.feature_auth.presentation.login
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -46,24 +42,14 @@ fun LoginScreenPortrait(
             title = "Login",
             subtitle = "Capture your thoughts and ideas."
         )
-        Spacer(Modifier.height(40.dp))
         LoginForm(
             modifier = Modifier.fillMaxWidth(),
             email = email,
             password = password,
             onEmailChange = {},
             onPasswordChange = {},
-            onLogin = onLogin
-        )
-        Spacer(Modifier.height(24.dp))
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onRegister() },
-            text = "Don’t have an account?",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary
+            onLogin = onLogin,
+            onRegister = onRegister
         )
     }
 }
