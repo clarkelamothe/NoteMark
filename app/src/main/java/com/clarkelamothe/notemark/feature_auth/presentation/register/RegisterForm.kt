@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.feature_auth.presentation.login
+package com.clarkelamothe.notemark.feature_auth.presentation.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,15 +23,23 @@ import com.clarkelamothe.notemark.core.presentation.designsystem.input.NoteMarkI
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 
 @Composable
-fun LoginForm(
+fun RegisterForm(
     modifier: Modifier = Modifier,
+    username: String,
     email: String,
     password: String,
+    repeatPassword: String,
+    onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onLogin: () -> Unit
+    onRepeatPasswordChange: (String) -> Unit,
+    onRegister: () -> Unit
 ) {
     var revealPassword by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var revealRepeatPassword by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -39,6 +47,15 @@ fun LoginForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        NoteMarkInputTextField(
+            label = "Username",
+            placeholder = "John.doe",
+            isError = false,
+            keyboardType = KeyboardType.Text,
+            value = username,
+            onValueChange = onUsernameChange
+        )
+
         NoteMarkInputTextField(
             label = "Email",
             placeholder = "john.doe@example.com",
@@ -77,24 +94,55 @@ fun LoginForm(
             }
         )
 
+        NoteMarkInputTextField(
+            label = "Repeat password",
+            placeholder = "Password",
+            isError = false,
+            keyboardType = KeyboardType.Password,
+            visualTransformation = PasswordVisualTransformation(),
+            value = repeatPassword,
+            onValueChange = onRepeatPasswordChange,
+            trailingIcon = {
+                IconButton(
+                    onClick = { revealRepeatPassword = !revealRepeatPassword }
+                ) {
+                    if (revealRepeatPassword) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_eye_off),
+                            contentDescription = null
+                        )
+                    } else {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_eye),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
+        )
+
         NoteMarkButton(
             modifier = Modifier.fillMaxWidth(),
-            label = "Login",
-            onClick = onLogin
+            label = "Create account",
+            onClick = onRegister
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginFormPreview() {
+private fun RegisterFormPreview() {
     NoteMarkTheme {
-        LoginForm(
+        RegisterForm(
             email = "",
             password = "",
             onEmailChange = {},
             onPasswordChange = {},
-            onLogin = {}
+            onRegister = {},
+            username = "",
+            repeatPassword = "",
+            onUsernameChange = {},
+            onRepeatPasswordChange = {}
         )
     }
 }

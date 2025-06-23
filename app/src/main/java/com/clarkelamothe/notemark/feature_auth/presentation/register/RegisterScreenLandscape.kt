@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.feature_auth.presentation.login
+package com.clarkelamothe.notemark.feature_auth.presentation.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,19 +19,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
 @Composable
-fun LoginScreenLandscape(
+fun RegisterScreenLandscape(
     modifier: Modifier = Modifier,
-    email: String = "",
-    password: String = "",
+    username: String,
+    email: String,
+    password: String,
+    repeatPassword: String,
     onPasswordChange: (String) -> Unit,
+    onRepeatPasswordChange: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onLogin: () -> Unit,
     onRegister: () -> Unit
 ) {
     Row(
@@ -54,7 +55,7 @@ fun LoginScreenLandscape(
             modifier = Modifier.weight(0.5f)
         ) {
             AuthHeader(
-                title = "Login",
+                title = "Create account",
                 subtitle = "Capture your thoughts and ideas."
             )
         }
@@ -65,13 +66,17 @@ fun LoginScreenLandscape(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoginForm(
+            RegisterForm(
                 modifier = Modifier,
+                username = username,
                 email = email,
                 password = password,
+                repeatPassword = repeatPassword,
+                onUsernameChange = onUsernameChange,
                 onPasswordChange = onPasswordChange,
                 onEmailChange = onEmailChange,
-                onLogin = onLogin
+                onRegister = onRegister,
+                onRepeatPasswordChange = onRepeatPasswordChange
             )
             Spacer(Modifier.height(24.dp))
             Text(
@@ -80,25 +85,12 @@ fun LoginScreenLandscape(
                     .clickable {
                         onRegister()
                     },
-                text = "Don’t have an account?",
+                text = "Already have an account?",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(Modifier.height(46.dp))
         }
-    }
-}
-
-@Preview(device = "spec:parent=pixel_5,orientation=landscape")
-@Composable
-private fun LoginScreenLandscapePreview() {
-    NoteMarkTheme {
-        LoginScreenLandscape(
-            onPasswordChange = {},
-            onEmailChange = {},
-            onLogin = {},
-            onRegister = {}
-        )
     }
 }

@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.feature_auth.presentation.login
+package com.clarkelamothe.notemark.feature_auth.presentation.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,12 +17,17 @@ import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
 @Composable
-fun LoginScreenPortrait(
+fun RegisterScreenPortrait(
     modifier: Modifier = Modifier,
+    username: String,
+    email: String,
+    password: String,
+    repeatPassword: String,
     headerAlignment: TextAlign = TextAlign.Start,
-    email: String = "",
-    password: String = "",
-    onLogin: () -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRepeatPasswordChange: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
     onRegister: () -> Unit
 ) {
     Column(
@@ -43,24 +48,28 @@ fun LoginScreenPortrait(
         AuthHeader(
             modifier = Modifier.fillMaxWidth(),
             alignment = headerAlignment,
-            title = "Login",
+            title = "Create account",
             subtitle = "Capture your thoughts and ideas."
         )
         Spacer(Modifier.height(40.dp))
-        LoginForm(
+        RegisterForm(
             modifier = Modifier.fillMaxWidth(),
+            username = username,
             email = email,
             password = password,
-            onEmailChange = {},
-            onPasswordChange = {},
-            onLogin = onLogin
+            repeatPassword = repeatPassword,
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
+            onRegister = onRegister,
+            onUsernameChange = onUsernameChange,
+            onRepeatPasswordChange = onRepeatPasswordChange
         )
         Spacer(Modifier.height(24.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onRegister() },
-            text = "Don’t have an account?",
+                .clickable { },
+            text = "Already have an account?",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary

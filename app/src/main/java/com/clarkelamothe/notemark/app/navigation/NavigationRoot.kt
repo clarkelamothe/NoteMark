@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.onboarding.OnboardingScreenRoot
+import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -44,13 +45,7 @@ fun NavigationRoot(
         }
 
         composable<Route.Register> {
-            Column(
-                modifier = Modifier
-                    .background(Color.Magenta)
-                    .fillMaxSize()
-            ) {
-
-            }
+            RegisterScreenRoot()
         }
     }
 }
