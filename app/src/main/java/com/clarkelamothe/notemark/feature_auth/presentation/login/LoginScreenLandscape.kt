@@ -66,7 +66,6 @@ fun LoginScreenLandscape(
         Column(
             modifier = Modifier
                 .weight(0.5f)
-                .statusBarsPadding()
                 .navigationBarsPadding()
                 .imePadding()
                 .verticalScroll(rememberScrollState()),

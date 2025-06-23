@@ -44,7 +44,7 @@ fun LoginForm(
     }
 
     Column(
-        modifier = modifier.padding(top = 40.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         NoteMarkInputTextField(

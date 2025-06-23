@@ -43,7 +43,9 @@ fun LoginScreenPortrait(
             subtitle = "Capture your thoughts and ideas."
         )
         LoginForm(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 40.dp)
+                .fillMaxWidth(),
             email = email,
             password = password,
             onEmailChange = {},

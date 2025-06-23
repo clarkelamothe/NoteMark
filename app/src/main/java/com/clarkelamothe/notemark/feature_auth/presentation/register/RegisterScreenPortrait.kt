@@ -55,9 +55,8 @@ fun RegisterScreenPortrait(
         )
         RegisterForm(
             modifier = Modifier
+                .padding(top = 40.dp)
                 .fillMaxWidth()
-                .statusBarsPadding()
-                .navigationBarsPadding()
                 .imePadding()
                 .verticalScroll(rememberScrollState()),
             username = username,
