@@ -25,7 +25,7 @@ fun OnboardingSheet(
     modifier: Modifier = Modifier,
     header: @Composable ColumnScope.() -> Unit,
     onGetStarted: () -> Unit,
-    onLogin: () -> Unit
+    onGoToLogin: () -> Unit
 ) {
     Column(
         modifier = modifier.wrapContentWidth(),
@@ -37,14 +37,14 @@ fun OnboardingSheet(
             label = "Get Started",
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = onLogin
+            onClick = onGetStarted
         )
         Spacer(Modifier.height(6.dp))
         NoteMarkOutlinedButton(
             label = "Login",
             modifier = Modifier
                 .fillMaxWidth(),
-            onClick = onGetStarted
+            onClick = onGoToLogin
         )
     }
 }
@@ -63,7 +63,7 @@ private fun OnboardingSheetPreview() {
                     )
                 )
                 .padding(16.dp),
-            onLogin = {},
+            onGoToLogin = {},
             onGetStarted = {},
             header = {
                 Text(

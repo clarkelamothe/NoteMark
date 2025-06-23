@@ -1,2 +1,53 @@
 package com.clarkelamothe.notemark.app.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
+import com.clarkelamothe.notemark.feature_auth.presentation.onboarding.OnboardingScreenRoot
+
+
+@Composable
+fun NavigationRoot(
+    navController: NavHostController
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Route.Onboarding
+    ) {
+        composable<Route.Onboarding> {
+            OnboardingScreenRoot(
+                onGoToLogin = {
+                    navController.navigate(Route.Login)
+                },
+                onGetStartedClick = {
+                    navController.navigate(Route.Register)
+                }
+            )
+        }
+
+        composable<Route.Login> {
+            LoginScreenRoot(
+                onGoToRegister = {
+                    navController.navigate(Route.Register)
+                }
+            )
+        }
+
+        composable<Route.Register> {
+            Column(
+                modifier = Modifier
+                    .background(Color.Magenta)
+                    .fillMaxSize()
+            ) {
+
+            }
+        }
+    }
+}

@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
+import com.clarkelamothe.notemark.app.navigation.NavigationRoot
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
 import kotlinx.coroutines.delay
@@ -24,13 +26,9 @@ class MainActivity : ComponentActivity() {
             false
         }
         setContent {
+            val navController = rememberNavController()
             NoteMarkTheme {
-//                OnboardingScreenRoot(
-//                    onLoginClick = {},
-//                    onGetStartedClick = {}
-//                )
-
-                LoginScreenRoot()
+                NavigationRoot(navController)
             }
         }
     }

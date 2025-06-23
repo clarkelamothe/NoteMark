@@ -18,7 +18,7 @@ import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
 @Composable
 fun OnboardingScreenRoot(
-    onLoginClick: () -> Unit,
+    onGoToLogin: () -> Unit,
     onGetStartedClick: () -> Unit
 ) {
     val orientation = LocalOrientation.current
@@ -37,8 +37,8 @@ fun OnboardingScreenRoot(
                     vertical = 32.dp,
                     horizontal = 16.dp
                 ),
-            onLoginClick = {},
-            onGetStartedClick = {},
+            onLoginClick = onGoToLogin,
+            onGetStartedClick = onGetStartedClick,
             header = {
                 AuthHeader(
                     title = "Your Own Collection of Notes",
@@ -64,8 +64,8 @@ fun OnboardingScreenRoot(
                 )
                 .wrapContentHeight()
                 .fillMaxWidth(0.5f),
-            onLoginClick = {},
-            onGetStartedClick = {}
+            onLoginClick = onGoToLogin,
+            onGetStartedClick = onGetStartedClick
         )
 
         Orientation.TABLET_PORTRAIT -> {
@@ -85,8 +85,8 @@ fun OnboardingScreenRoot(
                         end = 48.dp,
                         bottom = 24.dp
                     ),
-                onLoginClick = {},
-                onGetStartedClick = {},
+                onLoginClick = onGoToLogin,
+                onGetStartedClick = onGetStartedClick,
                 header = {
                     AuthHeader(
                         title = "Your Own Collection of Notes",
@@ -115,13 +115,12 @@ fun OnboardingScreenRoot(
                     )
                     .wrapContentHeight()
                     .fillMaxWidth(0.5f),
-                onLoginClick = {},
-                onGetStartedClick = {}
+                onLoginClick = onGoToLogin,
+                onGetStartedClick = onGetStartedClick
             )
         }
 
-        Orientation.DESKTOP, null -> {
-            /* No-Op */
+        Orientation.DESKTOP, null -> { /* No-Op */
         }
     }
 }
@@ -131,7 +130,7 @@ fun OnboardingScreenRoot(
 private fun OnboardingScreenPreview() {
     NoteMarkTheme {
         OnboardingScreenRoot(
-            onLoginClick = {},
+            onGoToLogin = {},
             onGetStartedClick = {}
         )
     }

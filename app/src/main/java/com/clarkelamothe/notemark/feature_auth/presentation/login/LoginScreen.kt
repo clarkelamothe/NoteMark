@@ -16,7 +16,9 @@ import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 
 @Composable
-fun LoginScreenRoot() {
+fun LoginScreenRoot(
+    onGoToRegister: () -> Unit
+) {
     val orientation = LocalOrientation.current
 
     Scaffold(
@@ -25,16 +27,20 @@ fun LoginScreenRoot() {
         when (orientation) {
             Orientation.PHONE_PORTRAIT -> LoginScreenPortrait(
                 modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
+                    .padding(top = it.calculateTopPadding())
+                    .fillMaxSize(),
+                onRegister = onGoToRegister,
+                onLogin = {}
             )
 
             Orientation.PHONE_LANDSCAPE -> LoginScreenLandscape(
                 modifier = Modifier
-                    .padding(it)
+                    .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
                 onEmailChange = {},
-                onPasswordChange = {}
+                onPasswordChange = {},
+                onLogin = {},
+                onRegister = onGoToRegister
             )
 
             Orientation.TABLET_PORTRAIT -> LoginScreenPortrait(
@@ -52,14 +58,18 @@ fun LoginScreenRoot() {
                         horizontal = 120.dp
                     )
                     .fillMaxSize(),
-                headerAlignment = TextAlign.Center
+                headerAlignment = TextAlign.Center,
+                onRegister = onGoToRegister,
+                onLogin = {}
             )
 
             Orientation.TABLET_LANDSCAPE -> LoginScreenLandscape(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding()),
                 onPasswordChange = {},
-                onEmailChange = {}
+                onEmailChange = {},
+                onLogin = {},
+                onRegister = onGoToRegister
             )
 
             Orientation.DESKTOP, null -> {}
@@ -72,7 +82,9 @@ fun LoginScreenRoot() {
 @Composable
 private fun LoginScreenPreview() {
     NoteMarkTheme {
-        LoginScreenRoot()
+        LoginScreenRoot(
+            onGoToRegister = {}
+        )
     }
 }
 
@@ -80,6 +92,8 @@ private fun LoginScreenPreview() {
 @Composable
 private fun LoginScreenLandscapePreview() {
     NoteMarkTheme {
-        LoginScreenRoot()
+        LoginScreenRoot(
+            onGoToRegister = {}
+        )
     }
 }

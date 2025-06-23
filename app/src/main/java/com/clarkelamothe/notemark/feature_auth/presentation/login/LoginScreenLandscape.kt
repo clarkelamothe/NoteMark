@@ -1,6 +1,7 @@
 package com.clarkelamothe.notemark.feature_auth.presentation.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,9 @@ fun LoginScreenLandscape(
     email: String = "",
     password: String = "",
     onPasswordChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit
+    onEmailChange: (String) -> Unit,
+    onLogin: () -> Unit,
+    onRegister: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -60,15 +63,19 @@ fun LoginScreenLandscape(
         ) {
             LoginForm(
                 modifier = Modifier,
-                email = "",
-                password = "",
-                onPasswordChange = {},
-                onEmailChange = {},
-                onLogin = {}
+                email = email,
+                password = password,
+                onPasswordChange = onPasswordChange,
+                onEmailChange = onEmailChange,
+                onLogin = onLogin
             )
             Spacer(Modifier.height(24.dp))
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onRegister()
+                    },
                 text = "Don’t have an account?",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
@@ -85,7 +92,9 @@ private fun LoginScreenLandscapePreview() {
     NoteMarkTheme {
         LoginScreenLandscape(
             onPasswordChange = {},
-            onEmailChange = {}
+            onEmailChange = {},
+            onLogin = {},
+            onRegister = {}
         )
     }
 }

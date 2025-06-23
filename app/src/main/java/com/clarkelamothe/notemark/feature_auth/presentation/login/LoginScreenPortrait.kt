@@ -1,6 +1,7 @@
 package com.clarkelamothe.notemark.feature_auth.presentation.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +21,9 @@ fun LoginScreenPortrait(
     modifier: Modifier = Modifier,
     headerAlignment: TextAlign = TextAlign.Start,
     email: String = "",
-    password: String = ""
+    password: String = "",
+    onLogin: () -> Unit,
+    onRegister: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -36,6 +39,7 @@ fun LoginScreenPortrait(
                 start = 16.dp,
                 end = 16.dp
             )
+
     ) {
         AuthHeader(
             modifier = Modifier.fillMaxWidth(),
@@ -50,11 +54,13 @@ fun LoginScreenPortrait(
             password = password,
             onEmailChange = {},
             onPasswordChange = {},
-            onLogin = {}
+            onLogin = onLogin
         )
         Spacer(Modifier.height(24.dp))
         Text(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onRegister() },
             text = "Don’t have an account?",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
