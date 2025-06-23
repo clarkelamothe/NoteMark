@@ -12,7 +12,6 @@ import androidx.navigation.compose.composable
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.onboarding.OnboardingScreenRoot
 
-
 @Composable
 fun NavigationRoot(
     navController: NavHostController
@@ -24,7 +23,11 @@ fun NavigationRoot(
         composable<Route.Onboarding> {
             OnboardingScreenRoot(
                 onGoToLogin = {
-                    navController.navigate(Route.Login)
+                    navController.navigate(Route.Login) {
+                        popUpTo<Route.Onboarding> {
+                            inclusive = true
+                        }
+                    }
                 },
                 onGetStartedClick = {
                     navController.navigate(Route.Register)
