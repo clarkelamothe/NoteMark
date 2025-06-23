@@ -90,8 +90,7 @@ fun LoginForm(
             label = "Login",
             onClick = onLogin
         )
-
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
