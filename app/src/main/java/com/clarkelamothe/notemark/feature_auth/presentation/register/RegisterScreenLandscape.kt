@@ -1,13 +1,11 @@
 package com.clarkelamothe.notemark.feature_auth.presentation.register
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -17,11 +15,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
@@ -36,7 +32,8 @@ fun RegisterScreenLandscape(
     onRepeatPasswordChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    onGoToLogin: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -82,19 +79,8 @@ fun RegisterScreenLandscape(
                 onPasswordChange = onPasswordChange,
                 onEmailChange = onEmailChange,
                 onRegister = onRegister,
-                onRepeatPasswordChange = onRepeatPasswordChange
-            )
-            Spacer(Modifier.height(24.dp))
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onRegister()
-                    },
-                text = "Already have an account?",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
+                onRepeatPasswordChange = onRepeatPasswordChange,
+                onGoToLogin = onGoToLogin
             )
             Spacer(Modifier.height(46.dp))
         }

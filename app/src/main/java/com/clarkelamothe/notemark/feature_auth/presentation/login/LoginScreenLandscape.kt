@@ -82,18 +82,6 @@ fun LoginScreenLandscape(
                 onLogin = onLogin,
                 onRegister = onRegister
             )
-            Spacer(Modifier.height(24.dp))
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onRegister()
-                    },
-                text = "Don’t have an account?",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
             Spacer(Modifier.height(46.dp))
         }
     }

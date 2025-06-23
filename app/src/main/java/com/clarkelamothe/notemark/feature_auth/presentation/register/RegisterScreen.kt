@@ -16,7 +16,9 @@ import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 
 @Composable
-fun RegisterScreenRoot() {
+fun RegisterScreenRoot(
+    onGoToLogin: () -> Unit
+) {
     val orientation = LocalOrientation.current
 
     Scaffold(
@@ -36,6 +38,7 @@ fun RegisterScreenRoot() {
                 onUsernameChange = {},
                 onEmailChange = {},
                 onRegister = {},
+                onGoToLogin = onGoToLogin
             )
 
             Orientation.PHONE_LANDSCAPE -> RegisterScreenLandscape(
@@ -50,8 +53,8 @@ fun RegisterScreenRoot() {
                 onRepeatPasswordChange = {},
                 onUsernameChange = { },
                 onEmailChange = { },
-                onRegister = { }
-
+                onRegister = { },
+                onGoToLogin = onGoToLogin
             )
 
             Orientation.TABLET_PORTRAIT -> RegisterScreenPortrait(
@@ -79,6 +82,7 @@ fun RegisterScreenRoot() {
                 onRepeatPasswordChange = {},
                 onUsernameChange = {},
                 onEmailChange = {},
+                onGoToLogin = onGoToLogin
             )
 
             Orientation.TABLET_LANDSCAPE -> RegisterScreenLandscape(
@@ -93,6 +97,7 @@ fun RegisterScreenRoot() {
                 onRepeatPasswordChange = {},
                 onUsernameChange = {},
                 onRegister = {},
+                onGoToLogin = onGoToLogin
             )
 
             Orientation.DESKTOP, null -> {}
@@ -104,7 +109,9 @@ fun RegisterScreenRoot() {
 @Composable
 private fun RegisterScreenPreview() {
     NoteMarkTheme {
-        RegisterScreenRoot()
+        RegisterScreenRoot(
+            onGoToLogin = {}
+        )
     }
 }
 
@@ -112,6 +119,8 @@ private fun RegisterScreenPreview() {
 @Composable
 private fun RegisterScreenLandscapetPreview() {
     NoteMarkTheme {
-        RegisterScreenRoot()
+        RegisterScreenRoot(
+            onGoToLogin = {}
+        )
     }
 }

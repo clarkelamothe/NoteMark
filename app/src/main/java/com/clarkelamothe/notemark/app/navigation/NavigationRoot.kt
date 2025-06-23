@@ -40,7 +40,11 @@ fun NavigationRoot(
         }
 
         composable<Route.Register> {
-            RegisterScreenRoot()
+            RegisterScreenRoot(
+                onGoToLogin = {
+                    navController.navigate(Route.Login)
+                }
+            )
         }
     }
 }

@@ -38,7 +38,8 @@ fun RegisterForm(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    onGoToLogin: () -> Unit
 ) {
     var revealPassword by rememberSaveable {
         mutableStateOf(false)
@@ -134,7 +135,9 @@ fun RegisterForm(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { },
+                .clickable {
+                    onGoToLogin()
+                },
             text = "Already have an account?",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
@@ -156,7 +159,8 @@ private fun RegisterFormPreview() {
             username = "",
             repeatPassword = "",
             onUsernameChange = {},
-            onRepeatPasswordChange = {}
+            onRepeatPasswordChange = {},
+            onGoToLogin = {}
         )
     }
 }
