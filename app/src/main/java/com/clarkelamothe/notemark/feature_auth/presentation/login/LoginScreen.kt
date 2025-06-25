@@ -7,20 +7,44 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_auth.presentation.AuthViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
+    viewModel: AuthViewModel = koinViewModel(),
     onGoToRegister: () -> Unit
 ) {
     val orientation = LocalOrientation.current
+    val loginState by viewModel.loginState.collectAsStateWithLifecycle()
 
+    LoginScreen(
+        orientation,
+        loginState
+    ) { action ->
+        when (action) {
+            LoginAction.OnRegisterClick -> onGoToRegister()
+            else -> {} /* No-op */
+        }
+        viewModel.onAction(action)
+    }
+}
+
+@Composable
+private fun LoginScreen(
+    orientation: Orientation?,
+    state: LoginState,
+    onAction: (LoginAction) -> Unit
+) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) {
@@ -29,18 +53,42 @@ fun LoginScreenRoot(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
-                onRegister = onGoToRegister,
-                onLogin = {}
+                email = state.email,
+                password = state.password,
+                onEmailChange = { email ->
+                    onAction(LoginAction.OnInputEmail(email))
+                },
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
+                },
+                onLogin = {
+                    onAction(LoginAction.OnLoginClick)
+                },
+                onPasswordChange = { password ->
+                    onAction(LoginAction.OnInputPassword(password))
+                },
+                canLogin = state.canLogin
             )
 
             Orientation.PHONE_LANDSCAPE -> LoginScreenLandscape(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
-                onEmailChange = {},
-                onPasswordChange = {},
-                onLogin = {},
-                onRegister = onGoToRegister
+                email = state.email,
+                password = state.password,
+                onEmailChange = { action ->
+                    onAction(LoginAction.OnInputEmail(action))
+                },
+                onPasswordChange = { password ->
+                    onAction(LoginAction.OnInputPassword(password))
+                },
+                onLogin = {
+                    onAction(LoginAction.OnLoginClick)
+                },
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
+                },
+                canLogin = state.canLogin
             )
 
             Orientation.TABLET_PORTRAIT -> LoginScreenPortrait(
@@ -59,23 +107,42 @@ fun LoginScreenRoot(
                     )
                     .fillMaxSize(),
                 headerAlignment = TextAlign.Center,
-                onRegister = onGoToRegister,
-                onLogin = {}
+                email = state.email,
+                password = state.password,
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
+                },
+                onLogin = {},
+                onEmailChange = { action ->
+                    onAction(LoginAction.OnInputEmail(action))
+                },
+                onPasswordChange = { password ->
+                    onAction(LoginAction.OnInputPassword(password))
+                },
+                canLogin = state.canLogin
             )
 
             Orientation.TABLET_LANDSCAPE -> LoginScreenLandscape(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding()),
-                onPasswordChange = {},
-                onEmailChange = {},
+                onPasswordChange = { password ->
+                    onAction(LoginAction.OnInputPassword(password))
+                },
+                email = state.email,
+                password = state.password,
+                onEmailChange = { action ->
+                    onAction(LoginAction.OnInputEmail(action))
+                },
                 onLogin = {},
-                onRegister = onGoToRegister
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
+                },
+                canLogin = state.canLogin
             )
 
             Orientation.DESKTOP, null -> {}
         }
     }
-
 }
 
 @Preview

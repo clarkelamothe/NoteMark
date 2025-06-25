@@ -18,8 +18,11 @@ fun LoginScreenPortrait(
     modifier: Modifier = Modifier,
     headerAlignment: TextAlign = TextAlign.Start,
     email: String = "",
+    onEmailChange: (String) -> Unit,
     password: String = "",
+    onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
+    canLogin: Boolean = false,
     onRegister: () -> Unit
 ) {
     Column(
@@ -49,10 +52,11 @@ fun LoginScreenPortrait(
                 .fillMaxWidth(),
             email = email,
             password = password,
-            onEmailChange = {},
-            onPasswordChange = {},
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
             onLogin = onLogin,
-            onRegister = onRegister
+            onRegister = onRegister,
+            canLogin = canLogin
         )
     }
 }

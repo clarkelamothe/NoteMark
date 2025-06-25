@@ -27,6 +27,7 @@ fun LoginForm(
     modifier: Modifier = Modifier,
     email: String,
     password: String,
+    canLogin: Boolean = false,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
@@ -68,6 +69,7 @@ fun LoginForm(
         )
 
         NoteMarkButton(
+            enabled = canLogin,
             modifier = Modifier.fillMaxWidth(),
             label = "Login",
             onClick = onLogin

@@ -32,7 +32,7 @@ fun NoteMarkButton(
 ) {
     Button(
         modifier = modifier,
-        onClick = onClick,
+        onClick = { onClick() },
         shape = RoundedCornerShape(8.dp),
         enabled = enabled,
         contentPadding = PaddingValues(
