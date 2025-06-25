@@ -54,20 +54,21 @@ private fun LoginScreen(
                     .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
                 email = state.email,
-                password = state.password,
                 onEmailChange = { email ->
                     onAction(LoginAction.OnInputEmail(email))
                 },
-                onRegister = {
-                    onAction(LoginAction.OnRegisterClick)
+                password = state.password,
+                onPasswordChange = { password ->
+                    onAction(LoginAction.OnInputPassword(password))
                 },
                 onLogin = {
                     onAction(LoginAction.OnLoginClick)
                 },
-                onPasswordChange = { password ->
-                    onAction(LoginAction.OnInputPassword(password))
+                canLogin = state.canLogin,
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
                 },
-                canLogin = state.canLogin
+                isLoading = state.isLoading
             )
 
             Orientation.PHONE_LANDSCAPE -> LoginScreenLandscape(
@@ -88,7 +89,8 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                canLogin = state.canLogin
+                canLogin = state.canLogin,
+                isLoading = state.isLoading
             )
 
             Orientation.TABLET_PORTRAIT -> LoginScreenPortrait(
@@ -108,18 +110,19 @@ private fun LoginScreen(
                     .fillMaxSize(),
                 headerAlignment = TextAlign.Center,
                 email = state.email,
-                password = state.password,
-                onRegister = {
-                    onAction(LoginAction.OnRegisterClick)
-                },
-                onLogin = {},
                 onEmailChange = { action ->
                     onAction(LoginAction.OnInputEmail(action))
                 },
+                password = state.password,
                 onPasswordChange = { password ->
                     onAction(LoginAction.OnInputPassword(password))
                 },
-                canLogin = state.canLogin
+                onLogin = {},
+                canLogin = state.canLogin,
+                onRegister = {
+                    onAction(LoginAction.OnRegisterClick)
+                },
+                isLoading = state.isLoading
             )
 
             Orientation.TABLET_LANDSCAPE -> LoginScreenLandscape(
@@ -137,7 +140,8 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                canLogin = state.canLogin
+                canLogin = state.canLogin,
+                isLoading = state.isLoading
             )
 
             Orientation.DESKTOP, null -> {}

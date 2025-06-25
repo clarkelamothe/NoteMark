@@ -7,11 +7,13 @@ import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginAction
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginState
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterAction
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val userDataValidator: UserDataValidator
@@ -72,7 +74,14 @@ class AuthViewModel(
         when (action) {
             is LoginAction.OnInputEmail -> email.update { action.email }
             is LoginAction.OnInputPassword -> password.update { action.password }
-            LoginAction.OnLoginClick -> println("Logging In")
+            LoginAction.OnLoginClick -> {
+                viewModelScope.launch {
+                    println("Logging in")
+                    _loginState.update { it.copy(isLoading = true) }
+                    delay(2000)
+                    _loginState.update { it.copy(isLoading = false) }
+                }
+            }
             else -> {} /* No-op */
         }
     }

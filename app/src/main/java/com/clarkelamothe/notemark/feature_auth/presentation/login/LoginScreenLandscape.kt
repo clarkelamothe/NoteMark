@@ -34,7 +34,8 @@ fun LoginScreenLandscape(
     onEmailChange: (String) -> Unit,
     onLogin: () -> Unit,
     canLogin: Boolean = false,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    isLoading: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -70,14 +71,14 @@ fun LoginScreenLandscape(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoginForm(
-                modifier = Modifier,
                 email = email,
                 password = password,
-                onPasswordChange = onPasswordChange,
+                canLogin = canLogin,
                 onEmailChange = onEmailChange,
+                onPasswordChange = onPasswordChange,
                 onLogin = onLogin,
                 onRegister = onRegister,
-                canLogin = canLogin
+                isLoading = isLoading
             )
             Spacer(Modifier.height(46.dp))
         }

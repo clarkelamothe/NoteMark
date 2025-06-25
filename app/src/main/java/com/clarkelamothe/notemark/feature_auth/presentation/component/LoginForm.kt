@@ -35,7 +35,8 @@ fun LoginForm(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    isLoading: Boolean = false
 ) {
     var revealPassword by rememberSaveable {
         mutableStateOf(false)
@@ -79,6 +80,7 @@ fun LoginForm(
         )
 
         NoteMarkButton(
+            isLoading = isLoading,
             enabled = canLogin,
             modifier = Modifier.fillMaxWidth(),
             label = "Login",
@@ -107,7 +109,8 @@ private fun LoginFormPreview() {
             onEmailChange = {},
             onPasswordChange = {},
             onLogin = {},
-            onRegister = {}
+            onRegister = {},
+            isLoading = false
         )
     }
 }

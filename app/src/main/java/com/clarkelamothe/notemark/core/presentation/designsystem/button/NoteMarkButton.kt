@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -26,13 +29,14 @@ fun NoteMarkButton(
     modifier: Modifier = Modifier,
     label: String,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     leadingIcon: @Composable () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
     onClick: () -> Unit
 ) {
     Button(
         modifier = modifier,
-        onClick = { onClick() },
+        onClick = { if (!isLoading) onClick() },
         shape = RoundedCornerShape(8.dp),
         enabled = enabled,
         contentPadding = PaddingValues(
@@ -40,12 +44,21 @@ fun NoteMarkButton(
             vertical = 6.dp
         )
     ) {
-        leadingIcon()
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleSmall
-        )
-        trailingIcon()
+
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+                strokeWidth = 2.dp,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        } else {
+            leadingIcon()
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall
+            )
+            trailingIcon()
+        }
     }
 }
 
@@ -82,6 +95,7 @@ private fun NoteMarkButtonPreview() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             NoteMarkButton(
+                isLoading = true,
                 label = "Label",
                 enabled = true,
                 leadingIcon = {

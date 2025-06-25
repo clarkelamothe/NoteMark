@@ -23,7 +23,8 @@ fun LoginScreenPortrait(
     onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
     canLogin: Boolean = false,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    isLoading: Boolean
 ) {
     Column(
         modifier = modifier
@@ -56,7 +57,8 @@ fun LoginScreenPortrait(
             onPasswordChange = onPasswordChange,
             onLogin = onLogin,
             onRegister = onRegister,
-            canLogin = canLogin
+            canLogin = canLogin,
+            isLoading = isLoading
         )
     }
 }
