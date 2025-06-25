@@ -23,6 +23,7 @@ fun RegisterScreenPortrait(
     email: String,
     password: String,
     repeatPassword: String,
+    canRegister: Boolean = false,
     headerAlignment: TextAlign = TextAlign.Start,
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit,
@@ -67,7 +68,8 @@ fun RegisterScreenPortrait(
             onRegister = onRegister,
             onUsernameChange = onUsernameChange,
             onRepeatPasswordChange = onRepeatPasswordChange,
-            onGoToLogin = onGoToLogin
+            onGoToLogin = onGoToLogin,
+            canRegister = canRegister
         )
     }
 }

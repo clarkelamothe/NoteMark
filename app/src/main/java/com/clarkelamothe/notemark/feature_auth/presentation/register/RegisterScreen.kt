@@ -7,20 +7,44 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_auth.presentation.AuthViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegisterScreenRoot(
+    viewModel: AuthViewModel = koinViewModel(),
     onGoToLogin: () -> Unit
 ) {
     val orientation = LocalOrientation.current
+    val registerState by viewModel.registerState.collectAsStateWithLifecycle()
 
+    RegisterScreen(
+        orientation,
+        registerState
+    ) { action ->
+        when (action) {
+            RegisterAction.OnLoginClick -> onGoToLogin()
+            else -> {} /* No-op */
+        }
+        viewModel.onAction(action)
+    }
+}
+
+@Composable
+fun RegisterScreen(
+    orientation: Orientation?,
+    state: RegisterState,
+    onAction: (RegisterAction) -> Unit
+) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary
     ) {
@@ -29,32 +53,57 @@ fun RegisterScreenRoot(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
-                username = "",
-                email = "",
-                password = "",
-                repeatPassword = "",
-                onPasswordChange = {},
-                onRepeatPasswordChange = {},
-                onUsernameChange = {},
-                onEmailChange = {},
-                onRegister = {},
-                onGoToLogin = onGoToLogin
+                username = state.username,
+                email = state.email,
+                password = state.password,
+                repeatPassword = state.repeatPassword,
+                canRegister = state.canRegister,
+                onPasswordChange = { password ->
+                    onAction(RegisterAction.OnInputPassword(password))
+                },
+                onRepeatPasswordChange = { password ->
+                    onAction(RegisterAction.OnRepeatPassword(password))
+                },
+                onUsernameChange = { username ->
+                    onAction(RegisterAction.OnInputUsername(username))
+                },
+                onEmailChange = { email ->
+                    onAction(RegisterAction.OnInputEmail(email))
+                },
+                onRegister = {
+                    onAction(RegisterAction.OnRegisterClick)
+                },
+                onGoToLogin = {
+                    onAction(RegisterAction.OnLoginClick)
+                }
             )
 
             Orientation.PHONE_LANDSCAPE -> RegisterScreenLandscape(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding())
                     .fillMaxSize(),
-                username = "",
-                email = "",
-                password = "",
-                repeatPassword = "",
-                onPasswordChange = {},
-                onRepeatPasswordChange = {},
-                onUsernameChange = { },
-                onEmailChange = { },
-                onRegister = { },
-                onGoToLogin = onGoToLogin
+                username = state.username,
+                email = state.email,
+                password = state.password,
+                repeatPassword = state.repeatPassword,
+                onPasswordChange = { password ->
+                    onAction(RegisterAction.OnInputPassword(password))
+                },
+                onRepeatPasswordChange = { password ->
+                    onAction(RegisterAction.OnRepeatPassword(password))
+                },
+                onUsernameChange = { username ->
+                    onAction(RegisterAction.OnInputUsername(username))
+                },
+                onEmailChange = { email ->
+                    onAction(RegisterAction.OnInputEmail(email))
+                },
+                onRegister = {
+                    onAction(RegisterAction.OnRegisterClick)
+                },
+                onGoToLogin = {
+                    onAction(RegisterAction.OnLoginClick)
+                }
             )
 
             Orientation.TABLET_PORTRAIT -> RegisterScreenPortrait(
@@ -73,31 +122,55 @@ fun RegisterScreenRoot(
                     )
                     .fillMaxSize(),
                 headerAlignment = TextAlign.Center,
-                onRegister = {},
-                username = "",
-                email = "",
-                password = "",
-                repeatPassword = "",
-                onPasswordChange = {},
-                onRepeatPasswordChange = {},
-                onUsernameChange = {},
-                onEmailChange = {},
-                onGoToLogin = onGoToLogin
+                username = state.username,
+                email = state.email,
+                password = state.password,
+                repeatPassword = state.repeatPassword,
+                onPasswordChange = { password ->
+                    onAction(RegisterAction.OnInputPassword(password))
+                },
+                onRepeatPasswordChange = { password ->
+                    onAction(RegisterAction.OnRepeatPassword(password))
+                },
+                onUsernameChange = { username ->
+                    onAction(RegisterAction.OnInputUsername(username))
+                },
+                onEmailChange = { email ->
+                    onAction(RegisterAction.OnInputEmail(email))
+                },
+                onRegister = {
+                    onAction(RegisterAction.OnRegisterClick)
+                },
+                onGoToLogin = {
+                    onAction(RegisterAction.OnLoginClick)
+                }
             )
 
             Orientation.TABLET_LANDSCAPE -> RegisterScreenLandscape(
                 modifier = Modifier
                     .padding(top = it.calculateTopPadding()),
-                onPasswordChange = {},
-                onEmailChange = {},
-                username = "",
-                email = "",
-                password = "",
-                repeatPassword = "",
-                onRepeatPasswordChange = {},
-                onUsernameChange = {},
-                onRegister = {},
-                onGoToLogin = onGoToLogin
+                username = state.username,
+                email = state.email,
+                password = state.password,
+                repeatPassword = state.repeatPassword,
+                onPasswordChange = { password ->
+                    onAction(RegisterAction.OnInputPassword(password))
+                },
+                onRepeatPasswordChange = { password ->
+                    onAction(RegisterAction.OnRepeatPassword(password))
+                },
+                onUsernameChange = { username ->
+                    onAction(RegisterAction.OnInputUsername(username))
+                },
+                onEmailChange = { email ->
+                    onAction(RegisterAction.OnInputEmail(email))
+                },
+                onRegister = {
+                    onAction(RegisterAction.OnRegisterClick)
+                },
+                onGoToLogin = {
+                    onAction(RegisterAction.OnLoginClick)
+                }
             )
 
             Orientation.DESKTOP, null -> {}
