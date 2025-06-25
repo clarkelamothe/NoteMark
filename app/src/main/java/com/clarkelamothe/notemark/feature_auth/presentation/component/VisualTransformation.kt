@@ -5,5 +5,5 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun passwordVisualTransformation(revealPassword: Boolean): VisualTransformation =
+fun passwordVisualTransformation(revealPassword: Boolean) =
     if (revealPassword) VisualTransformation.None else PasswordVisualTransformation()

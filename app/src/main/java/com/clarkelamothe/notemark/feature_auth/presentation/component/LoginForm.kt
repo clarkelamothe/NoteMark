@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.feature_auth.presentation.register
+package com.clarkelamothe.notemark.feature_auth.presentation.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,28 +21,18 @@ import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.core.presentation.designsystem.button.NoteMarkButton
 import com.clarkelamothe.notemark.core.presentation.designsystem.input.NoteMarkInputTextField
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
-import com.clarkelamothe.notemark.feature_auth.presentation.component.EyeIconToggle
-import com.clarkelamothe.notemark.feature_auth.presentation.component.passwordVisualTransformation
 
 @Composable
-fun RegisterForm(
+fun LoginForm(
     modifier: Modifier = Modifier,
-    username: String,
     email: String,
     password: String,
-    repeatPassword: String,
-    onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onRepeatPasswordChange: (String) -> Unit,
-    onRegister: () -> Unit,
-    onGoToLogin: () -> Unit
+    onLogin: () -> Unit,
+    onRegister: () -> Unit
 ) {
     var revealPassword by rememberSaveable {
-        mutableStateOf(false)
-    }
-
-    var revealRepeatPassword by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -50,15 +40,6 @@ fun RegisterForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        NoteMarkInputTextField(
-            label = "Username",
-            placeholder = "John.doe",
-            isError = false,
-            keyboardType = KeyboardType.Text,
-            value = username,
-            onValueChange = onUsernameChange
-        )
-
         NoteMarkInputTextField(
             label = "Email",
             placeholder = "john.doe@example.com",
@@ -78,43 +59,25 @@ fun RegisterForm(
             onValueChange = onPasswordChange,
             trailingIcon = {
                 EyeIconToggle(
-                    revealPassword
-                ) {
-                    revealPassword = !revealPassword
-                }
-            }
-        )
-
-        NoteMarkInputTextField(
-            label = "Repeat password",
-            placeholder = "Password",
-            isError = false,
-            keyboardType = KeyboardType.Password,
-            visualTransformation = passwordVisualTransformation(revealRepeatPassword),
-            value = repeatPassword,
-            onValueChange = onRepeatPasswordChange,
-            trailingIcon = {
-                EyeIconToggle(
-                    revealRepeatPassword
-                ) {
-                    revealRepeatPassword = !revealRepeatPassword
-                }
+                    onClick = {
+                        revealPassword = !revealPassword
+                    },
+                    isOn = revealPassword
+                )
             }
         )
 
         NoteMarkButton(
             modifier = Modifier.fillMaxWidth(),
-            label = "Create account",
-            onClick = onRegister
+            label = "Login",
+            onClick = onLogin
         )
         Spacer(Modifier.height(8.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    onGoToLogin()
-                },
-            text = "Already have an account?",
+                .clickable { onRegister() },
+            text = "Don’t have an account?",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary
@@ -124,19 +87,15 @@ fun RegisterForm(
 
 @Preview(showBackground = true)
 @Composable
-private fun RegisterFormPreview() {
+private fun LoginFormPreview() {
     NoteMarkTheme {
-        RegisterForm(
+        LoginForm(
             email = "",
             password = "",
             onEmailChange = {},
             onPasswordChange = {},
-            onRegister = {},
-            username = "",
-            repeatPassword = "",
-            onUsernameChange = {},
-            onRepeatPasswordChange = {},
-            onGoToLogin = {}
+            onLogin = {},
+            onRegister = {}
         )
     }
 }

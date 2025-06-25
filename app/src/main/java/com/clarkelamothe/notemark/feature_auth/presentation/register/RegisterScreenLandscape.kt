@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
+import com.clarkelamothe.notemark.feature_auth.presentation.component.RegisterForm
 
 @Composable
 fun RegisterScreenLandscape(

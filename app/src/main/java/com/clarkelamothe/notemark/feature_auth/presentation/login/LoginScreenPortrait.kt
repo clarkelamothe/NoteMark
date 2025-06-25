@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
+import com.clarkelamothe.notemark.feature_auth.presentation.component.LoginForm
 
 @Composable
 fun LoginScreenPortrait(

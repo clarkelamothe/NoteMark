@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.feature_auth.presentation.login
+package com.clarkelamothe.notemark.feature_auth.presentation.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,21 +21,26 @@ import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.core.presentation.designsystem.button.NoteMarkButton
 import com.clarkelamothe.notemark.core.presentation.designsystem.input.NoteMarkInputTextField
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
-import com.clarkelamothe.notemark.feature_auth.presentation.component.EyeIcon
-import com.clarkelamothe.notemark.feature_auth.presentation.component.EyeIconToggle
-import com.clarkelamothe.notemark.feature_auth.presentation.component.passwordVisualTransformation
 
 @Composable
-fun LoginForm(
+fun RegisterForm(
     modifier: Modifier = Modifier,
+    username: String,
     email: String,
     password: String,
+    repeatPassword: String,
+    onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onLogin: () -> Unit,
-    onRegister: () -> Unit
+    onRepeatPasswordChange: (String) -> Unit,
+    onRegister: () -> Unit,
+    onGoToLogin: () -> Unit
 ) {
     var revealPassword by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var revealRepeatPassword by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -44,6 +48,15 @@ fun LoginForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        NoteMarkInputTextField(
+            label = "Username",
+            placeholder = "John.doe",
+            isError = false,
+            keyboardType = KeyboardType.Text,
+            value = username,
+            onValueChange = onUsernameChange
+        )
+
         NoteMarkInputTextField(
             label = "Email",
             placeholder = "john.doe@example.com",
@@ -63,25 +76,43 @@ fun LoginForm(
             onValueChange = onPasswordChange,
             trailingIcon = {
                 EyeIconToggle(
-                    onClick = {
-                        revealPassword = !revealPassword
-                    },
-                    isOn = revealPassword
-                )
+                    revealPassword
+                ) {
+                    revealPassword = !revealPassword
+                }
+            }
+        )
+
+        NoteMarkInputTextField(
+            label = "Repeat password",
+            placeholder = "Password",
+            isError = false,
+            keyboardType = KeyboardType.Password,
+            visualTransformation = passwordVisualTransformation(revealRepeatPassword),
+            value = repeatPassword,
+            onValueChange = onRepeatPasswordChange,
+            trailingIcon = {
+                EyeIconToggle(
+                    revealRepeatPassword
+                ) {
+                    revealRepeatPassword = !revealRepeatPassword
+                }
             }
         )
 
         NoteMarkButton(
             modifier = Modifier.fillMaxWidth(),
-            label = "Login",
-            onClick = onLogin
+            label = "Create account",
+            onClick = onRegister
         )
         Spacer(Modifier.height(8.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onRegister() },
-            text = "Don’t have an account?",
+                .clickable {
+                    onGoToLogin()
+                },
+            text = "Already have an account?",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary
@@ -91,15 +122,19 @@ fun LoginForm(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginFormPreview() {
+private fun RegisterFormPreview() {
     NoteMarkTheme {
-        LoginForm(
+        RegisterForm(
             email = "",
             password = "",
             onEmailChange = {},
             onPasswordChange = {},
-            onLogin = {},
-            onRegister = {}
+            onRegister = {},
+            username = "",
+            repeatPassword = "",
+            onUsernameChange = {},
+            onRepeatPasswordChange = {},
+            onGoToLogin = {}
         )
     }
 }
