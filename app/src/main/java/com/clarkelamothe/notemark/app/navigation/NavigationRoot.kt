@@ -26,7 +26,11 @@ fun NavigationRoot(
                     }
                 },
                 onGetStartedClick = {
-                    navController.navigate(Route.Register)
+                    navController.navigate(Route.Register) {
+                        popUpTo<Route.Onboarding> {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -34,7 +38,11 @@ fun NavigationRoot(
         composable<Route.Login> {
             LoginScreenRoot(
                 onGoToRegister = {
-                    navController.navigate(Route.Register)
+                    navController.navigate(Route.Register) {
+                        popUpTo<Route.Register> {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -42,7 +50,7 @@ fun NavigationRoot(
         composable<Route.Register> {
             RegisterScreenRoot(
                 onGoToLogin = {
-                    navController.navigate(Route.Login)
+                    navController.navigateUp()
                 }
             )
         }
