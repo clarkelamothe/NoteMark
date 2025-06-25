@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +28,9 @@ import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 fun LoginForm(
     modifier: Modifier = Modifier,
     email: String,
+    isEmailError: Boolean = false,
     password: String,
+    isPasswordError: Boolean = false,
     canLogin: Boolean = false,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -42,19 +46,22 @@ fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         NoteMarkInputTextField(
+            modifier = Modifier,
             label = "Email",
             placeholder = "john.doe@example.com",
-            isError = false,
+            isError = isEmailError,
             keyboardType = KeyboardType.Email,
             value = email,
+            imeAction = ImeAction.Next,
             onValueChange = onEmailChange
         )
 
         NoteMarkInputTextField(
             label = "Password",
             placeholder = "Password",
-            isError = false,
+            isError = isPasswordError,
             keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done,
             visualTransformation = passwordVisualTransformation(revealPassword),
             value = password,
             onValueChange = onPasswordChange,
@@ -65,7 +72,10 @@ fun LoginForm(
                     },
                     isOn = revealPassword
                 )
-            }
+            },
+            keyboardActions = KeyboardActions(
+                onDone = { if (canLogin) onLogin() }
+            )
         )
 
         NoteMarkButton(

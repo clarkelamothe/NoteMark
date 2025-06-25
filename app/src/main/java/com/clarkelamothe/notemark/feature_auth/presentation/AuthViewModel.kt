@@ -36,7 +36,9 @@ class AuthViewModel : ViewModel() {
         when (action) {
             is LoginAction.OnInputEmail -> email.update { action.email }
             is LoginAction.OnInputPassword -> password.update { action.password }
-            LoginAction.OnLoginClick -> {}
+            LoginAction.OnLoginClick -> {
+                println("Logging In")
+            }
             LoginAction.OnTogglePasswordVisibility -> {}
             else -> {} /* No-op */
         }
