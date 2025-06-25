@@ -50,10 +50,11 @@ fun NoteMarkInputTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Color.Transparent,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = Color.Transparent,
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 errorBorderColor = MaterialTheme.colorScheme.error,
+                errorSupportingTextColor = MaterialTheme.colorScheme.error,
                 cursorColor = MaterialTheme.colorScheme.primary,
                 errorCursorColor = MaterialTheme.colorScheme.error
             ),

@@ -83,7 +83,7 @@ fun OnboardingScreenRoot(
                         top = 48.dp,
                         start = 48.dp,
                         end = 48.dp,
-                        bottom = 24.dp
+                        bottom = 32.dp
                     ),
                 onLoginClick = onGoToLogin,
                 onGetStartedClick = onGetStartedClick,

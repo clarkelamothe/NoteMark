@@ -4,14 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.R
 import com.clarkelamothe.notemark.feature_auth.presentation.component.AuthHeader
 
@@ -30,9 +29,9 @@ fun OnboardingScreenLandscape(
             painter = painterResource(R.drawable.bg_landing),
             contentDescription = null,
             modifier = Modifier
-                .padding(start = 20.dp)
+                .fillMaxWidth(0.4f)
                 .align(Alignment.CenterStart),
-            contentScale = ContentScale.Inside
+            contentScale = ContentScale.Crop
         )
 
         OnboardingSheet(

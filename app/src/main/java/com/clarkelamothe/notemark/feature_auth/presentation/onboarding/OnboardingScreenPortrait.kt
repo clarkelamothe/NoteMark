@@ -30,9 +30,9 @@ fun OnboardingScreenPortrait(
             painter = painterResource(R.drawable.bg_landing),
             contentDescription = null,
             modifier = Modifier
-                .fillMaxHeight(0.75f)
+                .fillMaxHeight(0.8f)
                 .align(Alignment.TopCenter),
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.Fit
         )
 
         OnboardingSheet(
