@@ -2,6 +2,7 @@ package com.clarkelamothe.notemark.feature_auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginAction
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginState
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterAction
@@ -12,7 +13,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val userDataValidator: UserDataValidator
+) : ViewModel() {
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
 
@@ -33,7 +36,9 @@ class AuthViewModel : ViewModel() {
                 loginState.copy(
                     email = email,
                     password = password,
-                    canLogin = email.isNotBlank() && password.isNotBlank()
+                    canLogin = userDataValidator.isValidEmail(email) && userDataValidator.validatePassword(
+                        password
+                    ).isValidPassword
                 )
             }
         }.launchIn(viewModelScope)
@@ -44,13 +49,20 @@ class AuthViewModel : ViewModel() {
             password,
             repeatPassword
         ) { username, email, password, repeatPassword ->
+            val canRegister = with(userDataValidator) {
+                isValidUsername(username) && isValidEmail(email) && password == repeatPassword &&
+                        validatePassword(
+                            password
+                        ).isValidPassword
+            }
+
             _registerState.update { registerState ->
                 registerState.copy(
                     username = username,
-                    email= email,
+                    email = email,
                     password = password,
                     repeatPassword = repeatPassword,
-                    canRegister = username.isNotBlank() && email.isNotBlank() && password == repeatPassword
+                    canRegister = canRegister
                 )
             }
         }.launchIn(viewModelScope)
