@@ -14,6 +14,7 @@ class UserDataValidator(
         val hasLowerCaseCharacter = password.any { it.isLowerCase() }
         val hasUpperCaseCharacter = password.any { it.isUpperCase() }
         val hasSpecialCharacter = password.any { !it.isLetterOrDigit() }
+
         return PasswordValidationState(
             hasMinLength = hasMinLength,
             hasNumber = hasDigit,
