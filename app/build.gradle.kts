@@ -54,8 +54,13 @@ dependencies {
     implementation(libs.androidx.adaptive)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-//    implementation(libs.ktor.client.auth)
-//    implementation("io.ktor:ktor-server-content-negotiation:3.0.0")
+
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.serialization.json)
+
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
