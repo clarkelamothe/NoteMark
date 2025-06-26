@@ -57,19 +57,23 @@ class AuthViewModel(
             password,
             repeatPassword
         ) { username, email, password, repeatPassword ->
-            val canRegister = with(userDataValidator) {
-                isValidUsername(username) && isValidEmail(email) && password == repeatPassword &&
-                        validatePassword(
-                            password
-                        ).isValidPassword
-            }
+            val usernameValid = userDataValidator.isValidUsername(username)
+            val emailValid = userDataValidator.isValidEmail(email)
+            val passwordValid = userDataValidator.validatePassword(password).isValidPassword
+
+            val passwordsMatched = password == repeatPassword
+            val canRegister = usernameValid && emailValid && passwordValid && passwordsMatched
 
             _registerState.update { registerState ->
                 registerState.copy(
-                    username = username,
                     email = email,
+                    username = username,
                     password = password,
                     repeatPassword = repeatPassword,
+                    emailError = email.isNotEmpty() && !emailValid,
+                    usernameError = username.isNotEmpty() && !usernameValid,
+                    passwordError = password.isNotEmpty() && !passwordValid,
+                    repeatPasswordError = repeatPassword.isNotEmpty() && !passwordsMatched,
                     canRegister = canRegister
                 )
             }

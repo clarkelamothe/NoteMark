@@ -20,9 +20,13 @@ import com.clarkelamothe.notemark.feature_auth.presentation.component.RegisterFo
 fun RegisterScreenPortrait(
     modifier: Modifier = Modifier,
     username: String,
+    usernameError: Boolean = false,
     email: String,
+    emailError: Boolean = false,
     password: String,
+    passwordError: Boolean = false,
     repeatPassword: String,
+    repeatPasswordError: Boolean = false,
     canRegister: Boolean = false,
     headerAlignment: TextAlign = TextAlign.Start,
     onPasswordChange: (String) -> Unit,
@@ -63,13 +67,17 @@ fun RegisterScreenPortrait(
             email = email,
             password = password,
             repeatPassword = repeatPassword,
+            canRegister = canRegister,
+            onUsernameChange = onUsernameChange,
             onEmailChange = onEmailChange,
             onPasswordChange = onPasswordChange,
-            onRegister = onRegister,
-            onUsernameChange = onUsernameChange,
             onRepeatPasswordChange = onRepeatPasswordChange,
+            onRegister = onRegister,
             onGoToLogin = onGoToLogin,
-            canRegister = canRegister
+            isEmailError = emailError,
+            isPasswordError = passwordError,
+            isRepeatPasswordError = repeatPasswordError,
+            isUsernameError = usernameError,
         )
     }
 }

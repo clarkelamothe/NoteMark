@@ -26,9 +26,14 @@ import com.clarkelamothe.notemark.feature_auth.presentation.component.RegisterFo
 fun RegisterScreenLandscape(
     modifier: Modifier = Modifier,
     username: String,
+    usernameError: Boolean = false,
     email: String,
+    emailError: Boolean = false,
     password: String,
+    passwordError: Boolean = false,
     repeatPassword: String,
+    repeatPasswordError: Boolean = false,
+    canRegister: Boolean = false,
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
@@ -71,17 +76,21 @@ fun RegisterScreenLandscape(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             RegisterForm(
-                modifier = Modifier,
                 username = username,
                 email = email,
                 password = password,
                 repeatPassword = repeatPassword,
+                canRegister = canRegister,
                 onUsernameChange = onUsernameChange,
-                onPasswordChange = onPasswordChange,
                 onEmailChange = onEmailChange,
-                onRegister = onRegister,
+                onPasswordChange = onPasswordChange,
                 onRepeatPasswordChange = onRepeatPasswordChange,
-                onGoToLogin = onGoToLogin
+                onRegister = onRegister,
+                onGoToLogin = onGoToLogin,
+                isEmailError = emailError,
+                isPasswordError = passwordError,
+                isUsernameError = usernameError,
+                isRepeatPasswordError = repeatPasswordError
             )
             Spacer(Modifier.height(46.dp))
         }

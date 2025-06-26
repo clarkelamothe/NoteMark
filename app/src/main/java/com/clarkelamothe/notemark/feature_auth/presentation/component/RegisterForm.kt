@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.core.presentation.designsystem.button.NoteMarkButton
 import com.clarkelamothe.notemark.core.presentation.designsystem.input.NoteMarkInputTextField
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
 
 @Composable
 fun RegisterForm(
@@ -37,7 +38,11 @@ fun RegisterForm(
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit,
     onRegister: () -> Unit,
-    onGoToLogin: () -> Unit
+    onGoToLogin: () -> Unit,
+    isEmailError: Boolean = false,
+    isPasswordError: Boolean = false,
+    isRepeatPasswordError: Boolean = false,
+    isUsernameError: Boolean = false
 ) {
     var revealPassword by rememberSaveable {
         mutableStateOf(false)
@@ -54,25 +59,27 @@ fun RegisterForm(
         NoteMarkInputTextField(
             label = "Username",
             placeholder = "John.doe",
-            isError = false,
+            isError = isUsernameError,
             keyboardType = KeyboardType.Text,
             value = username,
-            onValueChange = onUsernameChange
+            onValueChange = onUsernameChange,
+            supportingText = "Username must be at least 3 characters"
         )
 
         NoteMarkInputTextField(
             label = "Email",
             placeholder = "john.doe@example.com",
-            isError = false,
+            isError = isEmailError,
             keyboardType = KeyboardType.Email,
             value = email,
-            onValueChange = onEmailChange
+            onValueChange = onEmailChange,
+            supportingText = "Invalid email provided"
         )
 
         NoteMarkInputTextField(
             label = "Password",
             placeholder = "Password",
-            isError = false,
+            isError = isPasswordError,
             keyboardType = KeyboardType.Password,
             visualTransformation = passwordVisualTransformation(revealPassword),
             value = password,
@@ -83,13 +90,14 @@ fun RegisterForm(
                 ) {
                     revealPassword = !revealPassword
                 }
-            }
+            },
+            supportingText = "Password must be at least ${UserDataValidator.MIN_PASSWORD_LENGTH} characters and include a number or symbol."
         )
 
         NoteMarkInputTextField(
             label = "Repeat password",
             placeholder = "Password",
-            isError = false,
+            isError = isRepeatPasswordError,
             keyboardType = KeyboardType.Password,
             visualTransformation = passwordVisualTransformation(revealRepeatPassword),
             value = repeatPassword,
@@ -106,7 +114,8 @@ fun RegisterForm(
                 onDone = {
                     if (canRegister) onRegister()
                 }
-            )
+            ),
+            supportingText = "Passwords do not match"
         )
 
         NoteMarkButton(
@@ -135,16 +144,16 @@ fun RegisterForm(
 private fun RegisterFormPreview() {
     NoteMarkTheme {
         RegisterForm(
+            username = "",
             email = "",
             password = "",
-            onEmailChange = {},
-            onPasswordChange = {},
-            onRegister = {},
-            username = "",
             repeatPassword = "",
             onUsernameChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
             onRepeatPasswordChange = {},
-            onGoToLogin = {}
+            onRegister = {},
+            onGoToLogin = {},
         )
     }
 }

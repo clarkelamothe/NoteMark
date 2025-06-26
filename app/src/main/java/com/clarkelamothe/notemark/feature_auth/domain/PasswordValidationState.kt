@@ -8,5 +8,5 @@ data class PasswordValidationState(
     val hasSpecialCharacter: Boolean = false
 ) {
     val isValidPassword: Boolean
-        get() = hasMinLength && hasLowerCaseCharacter && hasUpperCaseCharacter && (hasNumber || hasSpecialCharacter)
+        get() = hasMinLength && (hasLowerCaseCharacter || hasUpperCaseCharacter) && (hasNumber || hasSpecialCharacter)
 }

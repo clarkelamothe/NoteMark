@@ -75,7 +75,11 @@ fun RegisterScreen(
                 },
                 onGoToLogin = {
                     onAction(RegisterAction.OnLoginClick)
-                }
+                },
+                usernameError = state.usernameError,
+                emailError = state.emailError,
+                passwordError = state.passwordError,
+                repeatPasswordError = state.repeatPasswordError
             )
 
             Orientation.PHONE_LANDSCAPE -> RegisterScreenLandscape(
@@ -103,7 +107,11 @@ fun RegisterScreen(
                 },
                 onGoToLogin = {
                     onAction(RegisterAction.OnLoginClick)
-                }
+                },
+                emailError = state.emailError,
+                usernameError = state.usernameError,
+                passwordError = state.passwordError,
+                repeatPasswordError = state.repeatPasswordError
             )
 
             Orientation.TABLET_PORTRAIT -> RegisterScreenPortrait(
@@ -143,7 +151,11 @@ fun RegisterScreen(
                 },
                 onGoToLogin = {
                     onAction(RegisterAction.OnLoginClick)
-                }
+                },
+                emailError = state.emailError,
+                usernameError = state.usernameError,
+                passwordError = state.passwordError,
+                repeatPasswordError = state.repeatPasswordError
             )
 
             Orientation.TABLET_LANDSCAPE -> RegisterScreenLandscape(
@@ -170,7 +182,11 @@ fun RegisterScreen(
                 },
                 onGoToLogin = {
                     onAction(RegisterAction.OnLoginClick)
-                }
+                },
+                emailError = state.emailError,
+                usernameError = state.usernameError,
+                passwordError = state.passwordError,
+                repeatPasswordError = state.repeatPasswordError
             )
 
             Orientation.DESKTOP, null -> {}
