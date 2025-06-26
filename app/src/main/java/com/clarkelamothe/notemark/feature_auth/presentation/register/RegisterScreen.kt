@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,12 +27,15 @@ fun RegisterScreenRoot(
     onGoToLogin: () -> Unit
 ) {
     val orientation = LocalOrientation.current
+    val keyboard = LocalSoftwareKeyboardController.current
     val registerState by viewModel.registerState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.registerEvents) { event ->
+        keyboard?.hide()
+
         when (event) {
-            RegisterEvent.OnRegisterError -> TODO()
-            RegisterEvent.OnRegisterSuccess -> TODO()
+            RegisterEvent.OnRegisterError -> keyboard?.hide()
+            RegisterEvent.OnRegisterSuccess -> onGoToLogin()
         }
     }
 
@@ -87,7 +91,8 @@ fun RegisterScreen(
                 usernameError = state.usernameError,
                 emailError = state.emailError,
                 passwordError = state.passwordError,
-                repeatPasswordError = state.repeatPasswordError
+                repeatPasswordError = state.repeatPasswordError,
+                isLoading = state.isRegistering
             )
 
             Orientation.PHONE_LANDSCAPE -> RegisterScreenLandscape(

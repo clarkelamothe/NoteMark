@@ -39,7 +39,8 @@ fun RegisterScreenLandscape(
     onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onRegister: () -> Unit,
-    onGoToLogin: () -> Unit
+    onGoToLogin: () -> Unit,
+    isLoading: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -90,7 +91,8 @@ fun RegisterScreenLandscape(
                 isEmailError = emailError,
                 isPasswordError = passwordError,
                 isUsernameError = usernameError,
-                isRepeatPasswordError = repeatPasswordError
+                isRepeatPasswordError = repeatPasswordError,
+                isLoading = isLoading
             )
             Spacer(Modifier.height(46.dp))
         }

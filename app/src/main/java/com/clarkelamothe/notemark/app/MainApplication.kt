@@ -1,6 +1,7 @@
 package com.clarkelamothe.notemark.app
 
 import android.app.Application
+import com.clarkelamothe.notemark.core.networking.di.networkingModule
 import com.clarkelamothe.notemark.feature_auth.di.authModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -15,7 +16,8 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
 
             modules(
-                authModule
+                authModule,
+                networkingModule
             )
         }
     }

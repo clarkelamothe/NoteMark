@@ -34,7 +34,8 @@ fun RegisterScreenPortrait(
     onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onRegister: () -> Unit,
-    onGoToLogin: () -> Unit
+    onGoToLogin: () -> Unit,
+    isLoading: Boolean = false
 ) {
     Column(
         modifier = modifier
@@ -78,6 +79,7 @@ fun RegisterScreenPortrait(
             isPasswordError = passwordError,
             isRepeatPasswordError = repeatPasswordError,
             isUsernameError = usernameError,
+            isLoading = isLoading
         )
     }
 }

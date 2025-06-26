@@ -2,6 +2,9 @@ package com.clarkelamothe.notemark.feature_auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clarkelamothe.notemark.core.domain.util.DataError
+import com.clarkelamothe.notemark.core.domain.util.Result
+import com.clarkelamothe.notemark.feature_auth.domain.AuthRepository
 import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginAction
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginEvent
@@ -20,7 +23,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val userDataValidator: UserDataValidator
+    private val userDataValidator: UserDataValidator,
+    private val repository: AuthRepository
 ) : ViewModel() {
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
@@ -96,10 +100,10 @@ class AuthViewModel(
             is LoginAction.OnInputPassword -> password.update { action.password }
             LoginAction.OnLoginClick -> {
                 viewModelScope.launch {
-                    _loginState.update { it.copy(isLoading = true) }
+                    _loginState.update { it.copy(isLoggingIn = true) }
                     delay(2000)
                     loginEventChannel.send(LoginEvent.OnLoginError)
-                    _loginState.update { it.copy(isLoading = false) }
+                    _loginState.update { it.copy(isLoggingIn = false) }
                 }
             }
 
@@ -115,7 +119,19 @@ class AuthViewModel(
             is RegisterAction.OnRepeatPassword -> repeatPassword.update { action.password }
             RegisterAction.OnRegisterClick -> {
                 viewModelScope.launch {
-                    registerEventChannel.send(RegisterEvent.OnRegisterSuccess)
+                    _registerState.update { it.copy(isRegistering = true) }
+                    val result = repository.register(
+                        username.value, email.value, password.value
+                    )
+                    _registerState.update { it.copy(isRegistering = false) }
+
+                    when (result) {
+                        is Result.Success -> registerEventChannel.send(RegisterEvent.OnRegisterSuccess)
+                        is Result.Error -> {
+//                            if (result.error == DataError.Network.CONFLICT) {}
+                            registerEventChannel.send(RegisterEvent.OnRegisterError)
+                        }
+                    }
                 }
             }
 

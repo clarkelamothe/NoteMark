@@ -42,7 +42,8 @@ fun RegisterForm(
     isEmailError: Boolean = false,
     isPasswordError: Boolean = false,
     isRepeatPasswordError: Boolean = false,
-    isUsernameError: Boolean = false
+    isUsernameError: Boolean = false,
+    isLoading: Boolean = false
 ) {
     var revealPassword by rememberSaveable {
         mutableStateOf(false)
@@ -122,7 +123,8 @@ fun RegisterForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = canRegister,
             label = "Create account",
-            onClick = onRegister
+            onClick = onRegister,
+            isLoading = isLoading
         )
         Spacer(Modifier.height(8.dp))
         Text(
