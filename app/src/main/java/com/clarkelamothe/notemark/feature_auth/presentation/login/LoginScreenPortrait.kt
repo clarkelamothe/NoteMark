@@ -18,8 +18,10 @@ fun LoginScreenPortrait(
     modifier: Modifier = Modifier,
     headerAlignment: TextAlign = TextAlign.Start,
     email: String = "",
+    isEmailError: Boolean = false,
     onEmailChange: (String) -> Unit,
     password: String = "",
+    isPasswordError: Boolean = false,
     onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
     canLogin: Boolean = false,
@@ -58,7 +60,9 @@ fun LoginScreenPortrait(
             onLogin = onLogin,
             onRegister = onRegister,
             canLogin = canLogin,
-            isLoading = isLoading
+            isLoading = isLoading,
+            isEmailError = isEmailError,
+            isPasswordError = isPasswordError
         )
     }
 }

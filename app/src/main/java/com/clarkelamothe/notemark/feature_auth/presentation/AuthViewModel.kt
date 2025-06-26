@@ -35,12 +35,18 @@ class AuthViewModel(
             password
         ) { email, password ->
             _loginState.update { loginState ->
+                val emailValid = userDataValidator.isValidEmail(email)
+                val passwordValid =
+                    userDataValidator.validatePassword(password).isValidPassword
+
+                val canLogin = emailValid && passwordValid
+
                 loginState.copy(
                     email = email,
                     password = password,
-                    canLogin = userDataValidator.isValidEmail(email) && userDataValidator.validatePassword(
-                        password
-                    ).isValidPassword
+                    emailError = email.isNotEmpty() && !emailValid,
+                    passwordError = password.isNotEmpty() && !passwordValid,
+                    canLogin = canLogin
                 )
             }
         }.launchIn(viewModelScope)
@@ -82,6 +88,7 @@ class AuthViewModel(
                     _loginState.update { it.copy(isLoading = false) }
                 }
             }
+
             else -> {} /* No-op */
         }
     }

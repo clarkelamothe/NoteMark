@@ -12,7 +12,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,7 +34,7 @@ fun NoteMarkInputTextField(
     label: String,
     placeholder: String,
     isError: Boolean = false,
-    supportingText: (@Composable () -> Unit)? = null,
+    supportingText: String = "",
     trailingIcon: (@Composable () -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType,
@@ -36,6 +43,9 @@ fun NoteMarkInputTextField(
     value: String,
     onValueChange: (String) -> Unit
 ) {
+    val focusRequester = remember { FocusRequester() }
+    var showSupportedText by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
     ) {
@@ -48,7 +58,10 @@ fun NoteMarkInputTextField(
         Spacer(modifier = Modifier.height(7.dp))
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .onFocusChanged { showSupportedText = !it.isFocused && isError },
             value = value,
             isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
@@ -62,7 +75,14 @@ fun NoteMarkInputTextField(
                 cursorColor = MaterialTheme.colorScheme.primary,
                 errorCursorColor = MaterialTheme.colorScheme.error
             ),
-            supportingText = supportingText,
+            supportingText = {
+                if (showSupportedText) {
+                    Text(
+                        style = MaterialTheme.typography.bodySmall,
+                        text = supportingText
+                    )
+                }
+            },
             textStyle = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onSurface
             ),
@@ -98,7 +118,7 @@ private fun EmailInputPreview() {
             value = "",
             visualTransformation = VisualTransformation.None,
             keyboardType = KeyboardType.Email,
-            supportingText = null,
+            supportingText = "supporting text",
             onValueChange = {},
             trailingIcon = {}
         )

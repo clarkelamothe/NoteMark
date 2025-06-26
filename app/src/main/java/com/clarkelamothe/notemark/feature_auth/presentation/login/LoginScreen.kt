@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ fun LoginScreenRoot(
     viewModel: AuthViewModel = koinViewModel(),
     onGoToRegister: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     val orientation = LocalOrientation.current
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
 
@@ -68,7 +70,9 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                isLoading = state.isLoading
+                isLoading = state.isLoading,
+                isEmailError = state.emailError,
+                isPasswordError = state.passwordError
             )
 
             Orientation.PHONE_LANDSCAPE -> LoginScreenLandscape(
@@ -90,7 +94,9 @@ private fun LoginScreen(
                     onAction(LoginAction.OnRegisterClick)
                 },
                 canLogin = state.canLogin,
-                isLoading = state.isLoading
+                isLoading = state.isLoading,
+                isEmailError = state.emailError,
+                isPasswordError = state.passwordError
             )
 
             Orientation.TABLET_PORTRAIT -> LoginScreenPortrait(
@@ -122,7 +128,9 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                isLoading = state.isLoading
+                isLoading = state.isLoading,
+                isEmailError = state.emailError,
+                isPasswordError = state.passwordError
             )
 
             Orientation.TABLET_LANDSCAPE -> LoginScreenLandscape(
@@ -141,7 +149,9 @@ private fun LoginScreen(
                     onAction(LoginAction.OnRegisterClick)
                 },
                 canLogin = state.canLogin,
-                isLoading = state.isLoading
+                isLoading = state.isLoading,
+                isEmailError = state.emailError,
+                isPasswordError = state.passwordError
             )
 
             Orientation.DESKTOP, null -> {}

@@ -23,12 +23,15 @@ import androidx.compose.ui.unit.dp
 import com.clarkelamothe.notemark.core.presentation.designsystem.button.NoteMarkButton
 import com.clarkelamothe.notemark.core.presentation.designsystem.input.NoteMarkInputTextField
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
 
 @Composable
 fun LoginForm(
     modifier: Modifier = Modifier,
     email: String,
     isEmailError: Boolean = false,
+    emailSupportingText: String = "Invalid email provided",
+    passwordSupportingText: String = "Password must be at least ${UserDataValidator.MIN_PASSWORD_LENGTH} characters and include a number or symbol.",
     password: String,
     isPasswordError: Boolean = false,
     canLogin: Boolean = false,
@@ -54,7 +57,8 @@ fun LoginForm(
             keyboardType = KeyboardType.Email,
             value = email,
             imeAction = ImeAction.Next,
-            onValueChange = onEmailChange
+            onValueChange = onEmailChange,
+            supportingText = emailSupportingText
         )
 
         NoteMarkInputTextField(
@@ -76,7 +80,8 @@ fun LoginForm(
             },
             keyboardActions = KeyboardActions(
                 onDone = { if (canLogin) onLogin() }
-            )
+            ),
+            supportingText = passwordSupportingText
         )
 
         NoteMarkButton(

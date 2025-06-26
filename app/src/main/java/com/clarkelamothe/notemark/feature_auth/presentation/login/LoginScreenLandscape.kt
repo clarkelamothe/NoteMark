@@ -35,7 +35,9 @@ fun LoginScreenLandscape(
     onLogin: () -> Unit,
     canLogin: Boolean = false,
     onRegister: () -> Unit,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    isEmailError: Boolean = false,
+    isPasswordError: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -78,7 +80,9 @@ fun LoginScreenLandscape(
                 onPasswordChange = onPasswordChange,
                 onLogin = onLogin,
                 onRegister = onRegister,
-                isLoading = isLoading
+                isLoading = isLoading,
+                isEmailError = isEmailError,
+                isPasswordError = isPasswordError
             )
             Spacer(Modifier.height(46.dp))
         }
