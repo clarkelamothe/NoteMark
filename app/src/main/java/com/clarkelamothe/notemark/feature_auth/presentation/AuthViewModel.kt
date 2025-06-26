@@ -4,14 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginAction
+import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginEvent
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginState
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterAction
+import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterEvent
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -23,6 +27,12 @@ class AuthViewModel(
 
     private val _registerState = MutableStateFlow(RegisterState())
     val registerState = _registerState.asStateFlow()
+
+    private val loginEventChannel = Channel<LoginEvent>()
+    val loginEvents = loginEventChannel.receiveAsFlow()
+
+    private val registerEventChannel = Channel<RegisterEvent>()
+    val registerEvents = registerEventChannel.receiveAsFlow()
 
     private val username = MutableStateFlow("")
     private val email = MutableStateFlow("")
@@ -86,9 +96,9 @@ class AuthViewModel(
             is LoginAction.OnInputPassword -> password.update { action.password }
             LoginAction.OnLoginClick -> {
                 viewModelScope.launch {
-                    println("Logging in")
                     _loginState.update { it.copy(isLoading = true) }
                     delay(2000)
+                    loginEventChannel.send(LoginEvent.OnLoginError)
                     _loginState.update { it.copy(isLoading = false) }
                 }
             }
@@ -103,7 +113,12 @@ class AuthViewModel(
             is RegisterAction.OnInputEmail -> email.update { action.email }
             is RegisterAction.OnInputPassword -> password.update { action.password }
             is RegisterAction.OnRepeatPassword -> repeatPassword.update { action.password }
-            RegisterAction.OnRegisterClick -> println("Registering In")
+            RegisterAction.OnRegisterClick -> {
+                viewModelScope.launch {
+                    registerEventChannel.send(RegisterEvent.OnRegisterSuccess)
+                }
+            }
+
             else -> {} /* No-op */
         }
     }

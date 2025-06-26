@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.core.presentation.util.ObserveAsEvents
 import com.clarkelamothe.notemark.feature_auth.presentation.AuthViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -26,6 +27,13 @@ fun RegisterScreenRoot(
 ) {
     val orientation = LocalOrientation.current
     val registerState by viewModel.registerState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.registerEvents) { event ->
+        when (event) {
+            RegisterEvent.OnRegisterError -> TODO()
+            RegisterEvent.OnRegisterSuccess -> TODO()
+        }
+    }
 
     RegisterScreen(
         orientation,

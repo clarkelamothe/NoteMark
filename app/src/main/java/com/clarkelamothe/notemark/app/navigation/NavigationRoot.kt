@@ -1,5 +1,6 @@
 package com.clarkelamothe.notemark.app.navigation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -43,6 +44,13 @@ fun NavigationRoot(
                             inclusive = true
                         }
                     }
+                },
+                onGoToHome = {
+                    navController.navigate(Route.Home) {
+                        popUpTo<Route.Login> {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -57,6 +65,12 @@ fun NavigationRoot(
                     }
                 }
             )
+        }
+
+        composable<Route.Home> {
+            Column {
+
+            }
         }
     }
 }
