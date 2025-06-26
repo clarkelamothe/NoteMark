@@ -2,7 +2,6 @@ package com.clarkelamothe.notemark.feature_auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.clarkelamothe.notemark.core.domain.util.DataError
 import com.clarkelamothe.notemark.core.domain.util.Result
 import com.clarkelamothe.notemark.feature_auth.domain.AuthRepository
 import com.clarkelamothe.notemark.feature_auth.domain.UserDataValidator
@@ -13,7 +12,6 @@ import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterAct
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterEvent
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterState
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -101,9 +99,15 @@ class AuthViewModel(
             LoginAction.OnLoginClick -> {
                 viewModelScope.launch {
                     _loginState.update { it.copy(isLoggingIn = true) }
-                    delay(2000)
-                    loginEventChannel.send(LoginEvent.OnLoginError)
+                    val result = repository.login(username.value, password.value)
                     _loginState.update { it.copy(isLoggingIn = false) }
+
+                    when (result) {
+                        is Result.Success -> loginEventChannel.send(LoginEvent.OnLoginSuccess)
+                        is Result.Error -> {
+                            loginEventChannel.send(LoginEvent.OnLoginError)
+                        }
+                    }
                 }
             }
 
