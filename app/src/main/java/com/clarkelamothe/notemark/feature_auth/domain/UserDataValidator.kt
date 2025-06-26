@@ -12,15 +12,11 @@ class UserDataValidator(
         return with(password.trim()) {
             val hasMinLength = length >= MIN_PASSWORD_LENGTH
             val hasDigit = any { it.isDigit() }
-            val hasLowerCaseCharacter = any { it.isLowerCase() }
-            val hasUpperCaseCharacter = any { it.isUpperCase() }
             val hasSpecialCharacter = any { !it.isLetterOrDigit() }
 
             PasswordValidationState(
                 hasMinLength = hasMinLength,
                 hasNumber = hasDigit,
-                hasLowerCaseCharacter = hasLowerCaseCharacter,
-                hasUpperCaseCharacter = hasUpperCaseCharacter,
                 hasSpecialCharacter = hasSpecialCharacter
             )
         }

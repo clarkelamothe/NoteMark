@@ -25,7 +25,6 @@ fun LoginScreenRoot(
     viewModel: AuthViewModel = koinViewModel(),
     onGoToRegister: () -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
     val orientation = LocalOrientation.current
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
 
