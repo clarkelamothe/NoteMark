@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,11 +36,14 @@ fun LoginScreenRoot(
     onGoToHome: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val keyboard = LocalSoftwareKeyboardController.current
     val snackbarHostState = remember { SnackbarHostState() }
     val orientation = LocalOrientation.current
     val loginState by viewModel.loginState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.loginEvents) { event ->
+        keyboard?.hide()
+
         when (event) {
             LoginEvent.OnLoginError -> scope.launch {
                 snackbarHostState.showSnackbar(
@@ -101,7 +105,7 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                isLoading = state.isLoading,
+                isLoading = state.isLoggingIn,
                 isEmailError = state.emailError,
                 isPasswordError = state.passwordError
             )
@@ -125,7 +129,7 @@ private fun LoginScreen(
                     onAction(LoginAction.OnRegisterClick)
                 },
                 canLogin = state.canLogin,
-                isLoading = state.isLoading,
+                isLoading = state.isLoggingIn,
                 isEmailError = state.emailError,
                 isPasswordError = state.passwordError
             )
@@ -161,7 +165,7 @@ private fun LoginScreen(
                 onRegister = {
                     onAction(LoginAction.OnRegisterClick)
                 },
-                isLoading = state.isLoading,
+                isLoading = state.isLoggingIn,
                 isEmailError = state.emailError,
                 isPasswordError = state.passwordError
             )
@@ -184,7 +188,7 @@ private fun LoginScreen(
                     onAction(LoginAction.OnRegisterClick)
                 },
                 canLogin = state.canLogin,
-                isLoading = state.isLoading,
+                isLoading = state.isLoggingIn,
                 isEmailError = state.emailError,
                 isPasswordError = state.passwordError
             )
