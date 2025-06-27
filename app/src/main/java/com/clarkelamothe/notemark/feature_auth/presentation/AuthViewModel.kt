@@ -94,12 +94,12 @@ class AuthViewModel(
 
     fun onAction(action: LoginAction) {
         when (action) {
-            is LoginAction.OnInputEmail -> email.update { action.email }
-            is LoginAction.OnInputPassword -> password.update { action.password }
+            is LoginAction.OnInputEmail -> email.update { action.email.trim() }
+            is LoginAction.OnInputPassword -> password.update { action.password.trim() }
             LoginAction.OnLoginClick -> {
                 viewModelScope.launch {
                     _loginState.update { it.copy(isLoggingIn = true) }
-                    val result = repository.login(username.value, password.value)
+                    val result = repository.login(email.value, password.value)
                     _loginState.update { it.copy(isLoggingIn = false) }
 
                     when (result) {

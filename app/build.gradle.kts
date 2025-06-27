@@ -27,9 +27,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"https://notemark.pl-coding.com\"")
+            buildConfigField("String", "USER_EMAIL", "\"clarkelamothe@yahoo.fr\"")
         }
         debug {
             buildConfigField("String", "BASE_URL", "\"https://notemark.pl-coding.com\"")
+            buildConfigField("String", "USER_EMAIL", "\"clarkelamothe@yahoo.fr\"")
         }
     }
     compileOptions {
@@ -65,6 +67,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.serialization.json)
+    implementation("io.ktor:ktor-client-logging:3.1.0")
 
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)

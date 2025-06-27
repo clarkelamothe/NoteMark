@@ -4,5 +4,5 @@ import com.clarkelamothe.notemark.core.networking.HttpClientFactory
 import org.koin.dsl.module
 
 val networkingModule = module {
-    single { HttpClientFactory().build() }
+    single { HttpClientFactory(get()).build() }
 }
