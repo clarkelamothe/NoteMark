@@ -11,11 +11,12 @@ import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterScr
 
 @Composable
 fun NavigationRoot(
-    navController: NavHostController
+    navController: NavHostController,
+    isLoggedIn: Boolean
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Onboarding
+        startDestination = if (isLoggedIn) Route.Home else Route.Onboarding
     ) {
         composable<Route.Onboarding> {
             OnboardingScreenRoot(

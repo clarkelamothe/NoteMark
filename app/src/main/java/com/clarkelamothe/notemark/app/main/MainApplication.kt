@@ -1,4 +1,4 @@
-package com.clarkelamothe.notemark.app
+package com.clarkelamothe.notemark.app.main
 
 import android.app.Application
 import com.clarkelamothe.notemark.app.di.appModule
