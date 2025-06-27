@@ -1,6 +1,5 @@
 package com.clarkelamothe.notemark.app.navigation
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.onboarding.OnboardingScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterScreenRoot
+import com.clarkelamothe.notemark.feature_note.presentation.notes.NotesScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -16,7 +16,7 @@ fun NavigationRoot(
 ) {
     NavHost(
         navController = navController,
-        startDestination = if (isLoggedIn) Route.Home else Route.Onboarding
+        startDestination = if (isLoggedIn) Route.Note else Route.Onboarding
     ) {
         composable<Route.Onboarding> {
             OnboardingScreenRoot(
@@ -47,7 +47,7 @@ fun NavigationRoot(
                     }
                 },
                 onGoToHome = {
-                    navController.navigate(Route.Home) {
+                    navController.navigate(Route.Note) {
                         popUpTo<Route.Login> {
                             inclusive = true
                         }
@@ -68,10 +68,8 @@ fun NavigationRoot(
             )
         }
 
-        composable<Route.Home> {
-            Column {
-
-            }
+        composable<Route.Note> {
+            NotesScreenRoot()
         }
     }
 }
