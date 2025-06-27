@@ -6,6 +6,7 @@ import com.clarkelamothe.notemark.core.data.di.coreDataModule
 import com.clarkelamothe.notemark.core.database.di.databaseModule
 import com.clarkelamothe.notemark.core.networking.di.networkingModule
 import com.clarkelamothe.notemark.feature_auth.di.authModule
+import com.clarkelamothe.notemark.feature_note.di.notesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -23,7 +24,8 @@ class MainApplication : Application() {
                 networkingModule,
                 databaseModule,
                 coreDataModule,
-                authModule
+                authModule,
+                notesModule
             )
         }
     }
