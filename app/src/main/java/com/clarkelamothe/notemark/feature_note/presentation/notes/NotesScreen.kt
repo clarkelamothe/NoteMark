@@ -43,11 +43,8 @@ fun NotesScreenRoot(
         onAction = { action ->
             when (action) {
                 NotesAction.OnCreateNote -> {}
-                NotesAction.OnLongClick -> {
-                    showDialog = true
-                }
-
-                NotesAction.OnNoteClick -> {}
+                NotesAction.OnLongClickNote -> showDialog = true
+                NotesAction.OnClickNote -> {}
                 else -> {} /* No-op */
             }
             viewModel.onAction(action)
@@ -87,7 +84,7 @@ fun NotesScreen(
                 modifier = Modifier.padding(top = it.calculateTopPadding()),
                 onClickNote = {},
                 onLongClickNote = {
-                    onAction(NotesAction.OnLongClick)
+                    onAction(NotesAction.OnLongClickNote)
                 }
             )
 

@@ -12,7 +12,7 @@ class NotesViewModel : ViewModel() {
         when (action) {
             NotesAction.OnCreateNote -> TODO()
             NotesAction.OnDeleteNote -> TODO()
-            NotesAction.OnNoteClick -> TODO()
+            NotesAction.OnClickNote -> TODO()
             else -> {} /* No-op */
         }
     }
