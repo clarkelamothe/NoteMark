@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.core.presentation.designsystem.appbar.NoteMarkTopBar
+import com.clarkelamothe.notemark.core.presentation.designsystem.button.NoteMarkFAB
 import com.clarkelamothe.notemark.core.presentation.designsystem.icon.ProfileIcon
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
@@ -40,7 +41,6 @@ fun NotesScreenRoot(
         orientation = orientation,
         onAction = { action ->
             when (action) {
-                NotesAction.OnCreateNote -> {}
                 NotesAction.OnLongClickNote -> showDialog = true
                 NotesAction.OnClickNote -> onGoToNote()
                 else -> {} /* No-op */
@@ -74,7 +74,9 @@ fun NotesScreen(
             )
         },
         floatingActionButton = {
-
+            NoteMarkFAB {
+                onAction(NotesAction.OnCreateNote)
+            }
         }
     ) {
         when (state.showEmptyState) {
