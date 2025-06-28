@@ -1,13 +1,20 @@
 package com.clarkelamothe.notemark.feature_auth.presentation.register
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
@@ -19,6 +26,7 @@ import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 import com.clarkelamothe.notemark.core.presentation.util.ObserveAsEvents
 import com.clarkelamothe.notemark.feature_auth.presentation.AuthViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -26,28 +34,37 @@ fun RegisterScreenRoot(
     viewModel: AuthViewModel = koinViewModel(),
     onGoToLogin: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val orientation = LocalOrientation.current
     val keyboard = LocalSoftwareKeyboardController.current
+    val snackbarHostState = remember { SnackbarHostState() }
     val registerState by viewModel.registerState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.registerEvents) { event ->
         keyboard?.hide()
 
         when (event) {
-            RegisterEvent.OnRegisterError -> keyboard?.hide()
+            RegisterEvent.OnRegisterError -> scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "Error registering!"
+                )
+            }
+
             RegisterEvent.OnRegisterSuccess -> onGoToLogin()
         }
     }
 
     RegisterScreen(
         orientation,
-        registerState
+        registerState,
+        snackbarHostState
     ) { action ->
         when (action) {
             RegisterAction.OnLoginClick -> onGoToLogin()
             else -> {} /* No-op */
         }
         viewModel.onAction(action)
+        snackbarHostState.currentSnackbarData?.dismiss()
     }
 }
 
@@ -55,10 +72,17 @@ fun RegisterScreenRoot(
 fun RegisterScreen(
     orientation: Orientation?,
     state: RegisterState,
+    snackbarHostState: SnackbarHostState,
     onAction: (RegisterAction) -> Unit
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.primary
+        containerColor = MaterialTheme.colorScheme.primary,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(WindowInsets.ime.asPaddingValues())
+            )
+        }
     ) {
         when (orientation) {
             Orientation.PHONE_PORTRAIT -> RegisterScreenPortrait(

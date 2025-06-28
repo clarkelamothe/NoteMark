@@ -132,6 +132,7 @@ class AuthViewModel(
                     when (result) {
                         is Result.Success -> registerEventChannel.send(RegisterEvent.OnRegisterSuccess)
                         is Result.Error -> {
+                            println("Error")
 //                            if (result.error == DataError.Network.CONFLICT) {}
                             registerEventChannel.send(RegisterEvent.OnRegisterError)
                         }
