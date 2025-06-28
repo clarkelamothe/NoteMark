@@ -12,5 +12,9 @@ data class NoteEntity(
     @ColumnInfo(name = "note_id")
     val noteId: Int,
     @ColumnInfo(name = "title")
-    val name: String
+    val title: String,
+    @ColumnInfo(name = "title")
+    val description: String,
+    @ColumnInfo(name = "created_at")
+    val createdAt: String
 )
