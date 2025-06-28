@@ -2,7 +2,9 @@
 
 package com.clarkelamothe.notemark.core.presentation.designsystem.appbar
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +21,7 @@ import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
 fun NoteMarkTopBar(
     modifier: Modifier = Modifier,
     title: String,
+    titlePadding: PaddingValues = PaddingValues(),
     colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
     ),
@@ -31,6 +34,7 @@ fun NoteMarkTopBar(
         navigationIcon = navigationIcon,
         title = {
             Text(
+                modifier = Modifier.padding(titlePadding),
                 text = title,
                 style = MaterialTheme.typography.titleMedium
             )

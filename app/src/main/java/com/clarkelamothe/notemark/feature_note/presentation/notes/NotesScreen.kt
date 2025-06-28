@@ -2,8 +2,10 @@
 
 package com.clarkelamothe.notemark.feature_note.presentation.notes
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -24,6 +26,7 @@ import com.clarkelamothe.notemark.core.presentation.designsystem.icon.ProfileIco
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_note.domain.NoteBM
 import com.clarkelamothe.notemark.feature_note.presentation.component.NoteMarkDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -70,6 +73,11 @@ fun NotesScreen(
                 title = "NoteMark",
                 actions = {
                     ProfileIcon(initials = "PL") {}
+                },
+                titlePadding = when (orientation) {
+                    Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> PaddingValues(0.dp)
+                    Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> PaddingValues(start = 60.dp)
+                    Orientation.DESKTOP, null -> TODO()
                 }
             )
         },
@@ -93,7 +101,7 @@ fun NotesScreen(
             }
 
             false -> when (orientation) {
-                Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> NotesScreenPortrait(
+                Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> NotesScreenContent(
                     modifier = Modifier.padding(top = it.calculateTopPadding()),
                     onClickNote = {
                         onAction(NotesAction.OnClickNote)
@@ -101,12 +109,23 @@ fun NotesScreen(
                     onLongClickNote = {
                         onAction(NotesAction.OnLongClickNote)
                     },
-                    notes = state.notes
+                    notes = state.notes,
+                    columns = StaggeredGridCells.Fixed(2),
+                    contentPadding = PaddingValues(16.dp)
                 )
 
-                Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {
-
-                }
+                Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> NotesScreenContent(
+                    modifier = Modifier.padding(top = it.calculateTopPadding()),
+                    onClickNote = {
+                        onAction(NotesAction.OnClickNote)
+                    },
+                    onLongClickNote = {
+                        onAction(NotesAction.OnLongClickNote)
+                    },
+                    notes = state.notes,
+                    columns = StaggeredGridCells.Fixed(3),
+                    contentPadding = PaddingValues(start = 60.dp, top = 16.dp, end = 16.dp)
+                )
 
                 Orientation.DESKTOP, null -> TODO()
             }
@@ -120,7 +139,40 @@ private fun NotesScreenPortraitPreview() {
     NoteMarkTheme {
         NotesScreen(
             orientation = Orientation.PHONE_PORTRAIT,
-            state = NotesState(),
+            state = NotesState(
+                notes = listOf(
+                    NoteBM(
+                        id = "1",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "2",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "3",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "4",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "5",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    )
+                )
+            ),
             onAction = {}
         )
     }
@@ -132,7 +184,40 @@ private fun NotesScreenLandscapePreview() {
     NoteMarkTheme {
         NotesScreen(
             orientation = Orientation.PHONE_LANDSCAPE,
-            state = NotesState(),
+            state = NotesState(
+                notes = listOf(
+                    NoteBM(
+                        id = "1",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "2",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "3",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "4",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    ),
+                    NoteBM(
+                        id = "5",
+                        date = "19 Apr",
+                        title = "Title",
+                        description = "Description"
+                    )
+                )
+            ),
             onAction = {}
         )
     }

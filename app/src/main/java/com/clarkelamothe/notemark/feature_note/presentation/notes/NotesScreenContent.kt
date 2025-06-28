@@ -12,18 +12,20 @@ import com.clarkelamothe.notemark.feature_note.domain.NoteBM
 import com.clarkelamothe.notemark.feature_note.presentation.component.NoteCard
 
 @Composable
-fun NotesScreenPortrait(
+fun NotesScreenContent(
     modifier: Modifier = Modifier,
     notes: List<NoteBM>,
+    contentPadding: PaddingValues,
+    columns: StaggeredGridCells = StaggeredGridCells.Fixed(3),
     onClickNote: () -> Unit,
     onLongClickNote: () -> Unit
 ) {
     LazyVerticalStaggeredGrid(
         modifier = modifier,
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = contentPadding,
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        columns = StaggeredGridCells.Fixed(2)
+        columns = columns
     ) {
         items(
             items = notes,
