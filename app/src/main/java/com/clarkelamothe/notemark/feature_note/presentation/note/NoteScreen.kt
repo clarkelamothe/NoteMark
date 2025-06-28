@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.R
@@ -43,7 +42,10 @@ fun NoteScreenRoot(
 
     NoteScreen(
         orientation = orientation,
-        state = state
+        state = state,
+        onAction = {
+
+        }
     )
 
     NoteMarkDialog(
@@ -61,7 +63,8 @@ fun NoteScreenRoot(
 @Composable
 fun NoteScreen(
     orientation: Orientation?,
-    state: NoteState
+    state: NoteState,
+    onAction: () -> Unit
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -108,7 +111,7 @@ fun NoteScreen(
                         modifier = Modifier.padding(
                             end = 16.dp
                         ),
-                        text = "Note Title",
+                        text = state.title,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -117,7 +120,7 @@ fun NoteScreen(
                         modifier = Modifier.padding(
                             end = 16.dp
                         ),
-                        text = "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ",
+                        text = state.description,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -136,17 +139,21 @@ fun NoteScreen(
 private fun NoteScreenPortraitPreview() {
     NoteMarkTheme {
         NoteScreen(
-            orientation = Orientation.PHONE_PORTRAIT, state = NoteState()
+            orientation = Orientation.PHONE_PORTRAIT,
+            state = NoteState(title = "Note Title", description = "Note Description"),
+            onAction = {}
         )
     }
 }
 
-@Preview(device = "spec:parent=pixel_5,orientation=landscape")()
+@Preview
 @Composable
 private fun NoteScreenLandscapePreview() {
     NoteMarkTheme {
         NoteScreen(
-            orientation = Orientation.PHONE_LANDSCAPE, state = NoteState()
+            orientation = Orientation.PHONE_LANDSCAPE,
+            state = NoteState(title = "Note Title", description = "Note Description"),
+            onAction = {}
         )
     }
 }

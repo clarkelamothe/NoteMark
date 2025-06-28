@@ -2,13 +2,8 @@
 
 package com.clarkelamothe.notemark.feature_note.presentation.notes
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -108,23 +102,7 @@ fun NotesScreen(
                 )
 
                 Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {
-                    LazyVerticalStaggeredGrid(
-                        modifier = Modifier.padding(top = it.calculateTopPadding()),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalItemSpacing = 16.dp,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        columns = StaggeredGridCells.Fixed(3)
-                    ) {
-                        (1..10).map { nm ->
-                            item {
-                                Text(
-                                    text = nm.toString(),
-                                    modifier = Modifier
-                                        .background(Color.LightGray)
-                                )
-                            }
-                        }
-                    }
+
                 }
 
                 Orientation.DESKTOP, null -> TODO()
