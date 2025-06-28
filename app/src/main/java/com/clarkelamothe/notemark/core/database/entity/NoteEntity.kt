@@ -13,8 +13,8 @@ data class NoteEntity(
     val noteId: Int,
     @ColumnInfo(name = "title")
     val title: String,
-    @ColumnInfo(name = "title")
+    @ColumnInfo(name = "description")
     val description: String,
-    @ColumnInfo(name = "created_at")
-    val createdAt: String
+    @ColumnInfo(name = "date")
+    val date: String
 )
