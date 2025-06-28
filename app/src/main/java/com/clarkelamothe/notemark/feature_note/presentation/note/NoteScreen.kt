@@ -1,10 +1,14 @@
 package com.clarkelamothe.notemark.feature_note.presentation.note
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -13,16 +17,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.R
 import com.clarkelamothe.notemark.core.presentation.designsystem.appbar.NoteMarkTopBar
@@ -67,7 +75,7 @@ fun NoteScreen(
     onAction: () -> Unit
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        containerColor = Color.Transparent,
         contentWindowInsets = WindowInsets(right = 16.dp, left = 16.dp, top = 16.dp),
         topBar = {
             NoteMarkTopBar(
@@ -82,6 +90,9 @@ fun NoteScreen(
                         )
                     }
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                ),
                 actions = {
                     TextButton(
                         onClick = {}
@@ -103,6 +114,7 @@ fun NoteScreen(
             Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> {
                 Column(
                     modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                         .padding(it)
                         .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -127,7 +139,39 @@ fun NoteScreen(
                 }
             }
 
-            Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {}
+            Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                        .padding(it)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .width(540.dp)
+                            .offset(y = (-24).dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    end = 16.dp
+                                )
+                                .zIndex(Float.MAX_VALUE),
+                            text = state.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        HorizontalDivider()
+                        Text(
+                            text = state.description,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
 
             Orientation.DESKTOP, null -> TODO()
         }
@@ -146,7 +190,7 @@ private fun NoteScreenPortraitPreview() {
     }
 }
 
-@Preview
+@Preview(device = "spec:parent=pixel_5,orientation=landscape")
 @Composable
 private fun NoteScreenLandscapePreview() {
     NoteMarkTheme {
