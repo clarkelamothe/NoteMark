@@ -13,6 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +26,7 @@ import com.clarkelamothe.notemark.core.presentation.designsystem.icon.ProfileIco
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_note.presentation.component.NoteMarkDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -31,17 +35,39 @@ fun NotesScreenRoot(
 ) {
     val orientation = LocalOrientation.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+    var showDialog by rememberSaveable { mutableStateOf(false) }
 
     NotesScreen(
         state = state,
-        orientation = orientation
+        orientation = orientation,
+        onAction = { action ->
+            when (action) {
+                NotesAction.OnCreateNote -> {}
+                NotesAction.OnLongClick -> {
+                    showDialog = true
+                }
+
+                NotesAction.OnNoteClick -> {}
+                else -> {} /* No-op */
+            }
+            viewModel.onAction(action)
+        }
+    )
+
+    NoteMarkDialog(
+        show = showDialog,
+        title = "Delete Note",
+        text = "Are you sure you want to delete this note?",
+        onConfirm = { viewModel.onAction(NotesAction.OnDeleteNote) },
+        onDismissRequest = { showDialog = false }
     )
 }
 
 @Composable
 fun NotesScreen(
     orientation: Orientation?,
-    state: NotesState
+    state: NotesState,
+    onAction: (NotesAction) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -59,6 +85,10 @@ fun NotesScreen(
         when (orientation) {
             Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> NotesScreenPortrait(
                 modifier = Modifier.padding(top = it.calculateTopPadding()),
+                onClickNote = {},
+                onLongClickNote = {
+                    onAction(NotesAction.OnLongClick)
+                }
             )
 
             Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {

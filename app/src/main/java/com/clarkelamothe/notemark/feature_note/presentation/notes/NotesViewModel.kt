@@ -12,8 +12,8 @@ class NotesViewModel : ViewModel() {
         when (action) {
             NotesAction.OnCreateNote -> TODO()
             NotesAction.OnDeleteNote -> TODO()
-            NotesAction.OnLongClick -> TODO()
             NotesAction.OnNoteClick -> TODO()
+            else -> {} /* No-op */
         }
     }
 }

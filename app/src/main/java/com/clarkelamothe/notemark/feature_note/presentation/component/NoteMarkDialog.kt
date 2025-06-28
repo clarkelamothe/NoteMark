@@ -10,48 +10,53 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun NoteMarkDialog(
     modifier: Modifier = Modifier,
+    show: Boolean,
     title: String,
     text: String,
     onConfirm: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    AlertDialog(
-        modifier = modifier,
-        icon = null,
-        title = {
-            Text(text = title)
-        },
-        text = {
-            Text(text = text)
-        },
-        onDismissRequest = {
-            onDismissRequest()
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirm()
+    if (show) {
+        AlertDialog(
+            modifier = modifier,
+            icon = null,
+            title = {
+                Text(text = title)
+            },
+            text = {
+                Text(text = text)
+            },
+            onDismissRequest = {
+                onDismissRequest()
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onConfirm()
+                    }
+                ) {
+                    Text("Delete")
                 }
-            ) {
-                Text("Delete")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismissRequest()
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        onDismissRequest()
+                    }
+                ) {
+                    Text("Cancel")
                 }
-            ) {
-                Text("Cancel")
             }
-        }
-    )
+        )
+
+    }
 }
 
 @Preview
 @Composable
 private fun NoteMarkDialogPreview() {
     NoteMarkDialog(
+        show = true,
         title = "Delete Note",
         text = "Are you sure you want to delete this note?",
         onConfirm = {},
