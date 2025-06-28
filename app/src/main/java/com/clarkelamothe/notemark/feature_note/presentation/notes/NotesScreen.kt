@@ -100,7 +100,8 @@ fun NotesScreen(
                     },
                     onLongClickNote = {
                         onAction(NotesAction.OnLongClickNote)
-                    }
+                    },
+                    notes = state.notes
                 )
 
                 Orientation.PHONE_LANDSCAPE, Orientation.TABLET_LANDSCAPE -> {
