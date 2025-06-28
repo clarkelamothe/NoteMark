@@ -57,7 +57,7 @@ fun NotesScreenRoot(
     NoteMarkDialog(
         show = showDialog,
         title = "Delete Note",
-        text = "Are you sure you want to delete this note?",
+        text = "Are you sure you want to delete this note? This action cannot be undone.",
         onConfirm = { viewModel.onAction(NotesAction.OnDeleteNote) },
         onDismissRequest = { showDialog = false }
     )
