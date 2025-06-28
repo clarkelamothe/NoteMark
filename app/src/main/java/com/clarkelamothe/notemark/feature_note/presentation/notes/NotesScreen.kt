@@ -135,10 +135,24 @@ fun NotesScreen(
 
 @Preview
 @Composable
-private fun NotesScreenPreview() {
+private fun NotesScreenPortraitPreview() {
     NoteMarkTheme {
-        NotesScreenRoot(
-            onGoToNote = {}
+        NotesScreen(
+            orientation = Orientation.PHONE_PORTRAIT,
+            state = NotesState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview(device = "spec:parent=pixel_5,orientation=landscape")
+@Composable
+private fun NotesScreenLandscapePreview() {
+    NoteMarkTheme {
+        NotesScreen(
+            orientation = Orientation.PHONE_LANDSCAPE,
+            state = NotesState(),
+            onAction = {}
         )
     }
 }

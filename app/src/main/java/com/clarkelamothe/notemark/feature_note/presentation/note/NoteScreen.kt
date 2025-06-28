@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.R
@@ -132,8 +133,20 @@ fun NoteScreen(
 
 @Preview
 @Composable
-private fun NoteScreenPreview() {
+private fun NoteScreenPortraitPreview() {
     NoteMarkTheme {
-        NoteScreenRoot()
+        NoteScreen(
+            orientation = Orientation.PHONE_PORTRAIT, state = NoteState()
+        )
+    }
+}
+
+@Preview(device = "spec:parent=pixel_5,orientation=landscape")()
+@Composable
+private fun NoteScreenLandscapePreview() {
+    NoteMarkTheme {
+        NoteScreen(
+            orientation = Orientation.PHONE_LANDSCAPE, state = NoteState()
+        )
     }
 }
