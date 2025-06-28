@@ -13,6 +13,8 @@ fun NoteMarkDialog(
     show: Boolean,
     title: String,
     text: String,
+    confirmText: String = "Delete",
+    cancelText: String = "Cancel",
     onConfirm: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
@@ -35,7 +37,7 @@ fun NoteMarkDialog(
                         onConfirm()
                     }
                 ) {
-                    Text("Delete")
+                    Text(confirmText)
                 }
             },
             dismissButton = {
@@ -44,7 +46,7 @@ fun NoteMarkDialog(
                         onDismissRequest()
                     }
                 ) {
-                    Text("Cancel")
+                    Text(cancelText)
                 }
             }
         )
