@@ -1,6 +1,5 @@
 package com.clarkelamothe.notemark.feature_auth.data
 
-import com.clarkelamothe.notemark.core.data.auth.AuthInfoSerializable
 import com.clarkelamothe.notemark.core.domain.AuthInfo
 import com.clarkelamothe.notemark.core.domain.SessionStorage
 import com.clarkelamothe.notemark.core.domain.util.DataError
@@ -9,6 +8,7 @@ import com.clarkelamothe.notemark.core.domain.util.Result
 import com.clarkelamothe.notemark.core.domain.util.asEmptyDataResult
 import com.clarkelamothe.notemark.core.networking.post
 import com.clarkelamothe.notemark.feature_auth.data.model.LoginRequestBody
+import com.clarkelamothe.notemark.feature_auth.data.model.LoginResponse
 import com.clarkelamothe.notemark.feature_auth.data.model.RegisterRequestBody
 import com.clarkelamothe.notemark.feature_auth.domain.AuthRepository
 import io.ktor.client.HttpClient
@@ -21,7 +21,7 @@ class AuthRepositoryImpl(
         email: String,
         password: String
     ): EmptyResult<DataError.Network> {
-        val result = client.post<LoginRequestBody, AuthInfoSerializable>(
+        val result = client.post<LoginRequestBody, LoginResponse>(
             route = "/api/auth/login",
             body = LoginRequestBody(email, password)
         )
