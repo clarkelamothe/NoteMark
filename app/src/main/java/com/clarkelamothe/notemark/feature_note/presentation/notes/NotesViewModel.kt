@@ -42,7 +42,7 @@ class NotesViewModel(
                         username.isBlank() -> ""
                         !username.contains(" ") -> username.take(2)
                         else -> {
-                            val words = username.split(" ").filter(String::isEmpty)
+                            val words = username.split(" ").filter { it.isNotEmpty() }
                             "${words.first().take(1)}${words.last().take(1)}"
                         }
                     }.uppercase()
