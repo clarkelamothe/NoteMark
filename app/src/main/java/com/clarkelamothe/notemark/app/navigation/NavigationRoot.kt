@@ -6,13 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.clarkelamothe.notemark.feature_auth.presentation.AuthViewModel
+import androidx.navigation.toRoute
 import com.clarkelamothe.notemark.feature_auth.presentation.login.LoginScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.onboarding.OnboardingScreenRoot
 import com.clarkelamothe.notemark.feature_auth.presentation.register.RegisterScreenRoot
 import com.clarkelamothe.notemark.feature_note.presentation.note.NoteScreenRoot
 import com.clarkelamothe.notemark.feature_note.presentation.notes.NotesScreenRoot
-import org.koin.androidx.compose.navigation.koinNavViewModel
 
 @Composable
 fun NavigationRoot(
@@ -91,13 +90,20 @@ private fun NavGraphBuilder.noteGraph(navController: NavHostController) {
         composable<Route.Notes> {
             NotesScreenRoot(
                 onGoToNote = {
-                    navController.navigate(Route.Note)
+                    navController.navigate(Route.Note(it))
                 }
             )
         }
 
         composable<Route.Note> {
-            NoteScreenRoot()
+            val id = it.toRoute<Route.Note>().id
+
+            NoteScreenRoot(
+                noteId = id,
+                onNoteDismissed = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

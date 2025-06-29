@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,8 +14,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.ImeAction
@@ -36,7 +40,14 @@ fun CreateNoteForm(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         val interactionSource = remember { MutableInteractionSource() }
+        val focusRequester = remember { FocusRequester() }
+
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
+
         BasicTextField(
+            modifier = Modifier.focusRequester(focusRequester),
             value = title,
             onValueChange = onTitleChange,
             interactionSource = interactionSource,
@@ -68,6 +79,7 @@ fun CreateNoteForm(
 
         HorizontalDivider()
         BasicTextField(
+            modifier = Modifier.fillMaxSize(),
             value = description,
             onValueChange = onDescriptionChange,
             interactionSource = interactionSource,

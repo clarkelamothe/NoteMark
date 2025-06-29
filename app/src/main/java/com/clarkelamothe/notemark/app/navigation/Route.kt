@@ -4,9 +4,10 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     @Serializable
-    data object Auth: Route
+    data object Auth : Route
+
     @Serializable
-    data object Home: Route
+    data object Home : Route
 
     @Serializable
     data object Onboarding : Route
@@ -21,5 +22,5 @@ sealed interface Route {
     data object Notes : Route
 
     @Serializable
-    data object Note : Route
+    data class Note(val id: String?) : Route
 }

@@ -1,6 +1,7 @@
 package com.clarkelamothe.notemark.feature_note.presentation.note
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,32 +29,55 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.R
 import com.clarkelamothe.notemark.core.presentation.designsystem.appbar.NoteMarkTopBar
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.core.presentation.util.ObserveAsEvents
 import com.clarkelamothe.notemark.feature_note.presentation.component.CreateNoteForm
 import com.clarkelamothe.notemark.feature_note.presentation.component.NoteMarkDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NoteScreenRoot(
-    viewModel: NoteViewModel = koinViewModel()
+    noteId: String? = null,
+    viewModel: NoteViewModel = koinViewModel(),
+    onNoteDismissed: () -> Unit
 ) {
     val orientation = LocalOrientation.current
+    val keyboard = LocalSoftwareKeyboardController.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by rememberSaveable { mutableStateOf(false) }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_CREATE) {
+        viewModel.onAction(NoteAction.LoadInitialNote(noteId))
+    }
+
+    ObserveAsEvents(viewModel.events) {
+        keyboard?.hide()
+
+        when (it) {
+            NoteEvent.DismissNote -> onNoteDismissed()
+            NoteEvent.ShowDialog -> showDialog = true
+        }
+    }
 
     NoteScreen(
         orientation = orientation,
         state = state,
-        onAction = {
-
+        onAction = { action ->
+            when (action) {
+                else -> {} /* No-op */
+            }
+            viewModel.onAction(action)
         }
     )
 
@@ -72,7 +97,7 @@ fun NoteScreenRoot(
 fun NoteScreen(
     orientation: Orientation?,
     state: NoteState,
-    onAction: () -> Unit
+    onAction: (NoteAction) -> Unit
 ) {
     Scaffold(
         containerColor = Color.Transparent,
@@ -82,7 +107,9 @@ fun NoteScreen(
                 title = "",
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = {
+                            onAction(NoteAction.OnCloseClick)
+                        }
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_close),
@@ -95,12 +122,16 @@ fun NoteScreen(
                 ),
                 actions = {
                     TextButton(
+                        enabled = state.canSaveNote,
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary,
+                            disabledContentColor = MaterialTheme.colorScheme.surfaceContainerLow
+                        ),
                         onClick = {}
                     ) {
                         Text(
                             text = "SAVE NOTE",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
+                            style = MaterialTheme.typography.titleSmall
                         )
                     }
                 }
@@ -120,8 +151,12 @@ fun NoteScreen(
                             .fillMaxSize(),
                         title = state.title,
                         description = state.description,
-                        {},
-                        {}
+                        { title ->
+                            onAction(NoteAction.OnTitleChange(title))
+                        },
+                        { description ->
+                            onAction(NoteAction.OnDescriptionChange(description))
+                        }
                     )
 
                     else -> NoteScreenContent(
@@ -130,7 +165,13 @@ fun NoteScreen(
                             .padding(it)
                             .fillMaxSize(),
                         title = state.title,
-                        description = state.description
+                        description = state.description,
+                        onTitleClick = {
+                            onAction(NoteAction.EnterEditMode)
+                        },
+                        onDescriptionClick = {
+                            onAction(NoteAction.EnterEditMode)
+                        }
                     )
                 }
             }
@@ -151,8 +192,12 @@ fun NoteScreen(
                                 .fillMaxSize(),
                             title = state.title,
                             description = state.description,
-                            {},
-                            {}
+                            onTitleChange = { title ->
+                                onAction(NoteAction.OnTitleChange(title))
+                            },
+                            onDescriptionChange = { description ->
+                                onAction(NoteAction.OnDescriptionChange(description))
+                            }
                         )
 
                         else -> NoteScreenContent(
@@ -161,7 +206,13 @@ fun NoteScreen(
                                 .offset(y = (-24).dp)
                                 .fillMaxSize(),
                             title = state.title,
-                            description = state.description
+                            description = state.description,
+                            onTitleClick = {
+                                onAction(NoteAction.EnterEditMode)
+                            },
+                            onDescriptionClick = {
+                                onAction(NoteAction.EnterEditMode)
+                            }
                         )
                     }
                 }
@@ -176,19 +227,27 @@ fun NoteScreen(
 private fun NoteScreenContent(
     modifier: Modifier = Modifier,
     title: String,
-    description: String
+    description: String,
+    onTitleClick: () -> Unit,
+    onDescriptionClick: () -> Unit
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
+            modifier = Modifier.clickable {
+                onTitleClick()
+            },
             text = title,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface
         )
         HorizontalDivider()
         Text(
+            modifier = Modifier.clickable {
+                onDescriptionClick()
+            },
             text = description,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant

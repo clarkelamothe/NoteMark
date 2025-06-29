@@ -33,7 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NotesScreenRoot(
     viewModel: NotesViewModel = koinViewModel(),
-    onGoToNote: () -> Unit
+    onGoToNote: (String?) -> Unit
 ) {
     val orientation = LocalOrientation.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -45,8 +45,8 @@ fun NotesScreenRoot(
         onAction = { action ->
             when (action) {
                 NotesAction.OnLongClickNote -> showDialog = true
-                NotesAction.OnClickNote -> onGoToNote()
-                NotesAction.OnCreateNote -> onGoToNote()
+                NotesAction.OnClickNote -> onGoToNote("id")
+                NotesAction.OnCreateNote -> onGoToNote(null)
                 else -> {} /* No-op */
             }
             viewModel.onAction(action)
