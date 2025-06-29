@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +41,10 @@ fun CreateNoteForm(
     onDescriptionChange: (String) -> Unit
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .navigationBarsPadding()
+            .imePadding()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         val interactionSource = remember { MutableInteractionSource() }
@@ -73,7 +81,14 @@ fun CreateNoteForm(
                     focusedIndicatorColor = Color.Transparent,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent
-                )
+                ),
+                placeholder = {
+                    Text(
+                        text = "Note Title",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             )
         }
 
@@ -89,7 +104,7 @@ fun CreateNoteForm(
             )
         ) { innerTextField ->
             TextFieldDefaults.DecorationBox(
-                value = title,
+                value = description,
                 visualTransformation = VisualTransformation.None,
                 innerTextField = innerTextField,
                 singleLine = false,
@@ -104,7 +119,14 @@ fun CreateNoteForm(
                     focusedIndicatorColor = Color.Transparent,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent
-                )
+                ),
+                placeholder = {
+                    Text(
+                        text = "Tap to enter note content",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             )
         }
     }

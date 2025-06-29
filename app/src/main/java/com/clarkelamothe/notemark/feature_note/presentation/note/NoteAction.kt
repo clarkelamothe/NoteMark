@@ -6,4 +6,5 @@ sealed interface NoteAction {
     data class OnDescriptionChange(val description: String) : NoteAction
     data class LoadInitialNote(val id: String?) : NoteAction
     data object EnterEditMode : NoteAction
+    data object OnDiscardNote : NoteAction
 }

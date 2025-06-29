@@ -45,37 +45,33 @@ class NoteViewModel : ViewModel() {
 
     fun onAction(action: NoteAction) {
         when (action) {
-            NoteAction.OnCloseClick -> {
-                viewModelScope.launch {
-                    if (_state.value.canSaveNote) {
-                        eventChannel.send(NoteEvent.ShowDialog)
-                    } else {
-                        eventChannel.send(NoteEvent.DismissNote)
-                    }
-                }
-            }
-
-            is NoteAction.OnDescriptionChange -> description.update {
-                action.description
-            }
-
-            is NoteAction.OnTitleChange -> title.update { action.title }
-            is NoteAction.LoadInitialNote -> {
-                if (action.id == null) {
-                    val placeholder = "Note Title"
-                    initialNote.update { Pair(placeholder, "") }
-
-                    title.update { placeholder }
-                    description.update { "" }
-                    editMode.update { true }
+            NoteAction.OnCloseClick -> viewModelScope.launch {
+                if (_state.value.canSaveNote) {
+                    eventChannel.send(NoteEvent.ShowDialog)
                 } else {
-                    // search in local db
-                    title.update { "Note From Local DB" }
-                    description.update { "Description From Local DB" }
+                    eventChannel.send(NoteEvent.DismissNote)
                 }
+            }
+
+            is NoteAction.OnDescriptionChange -> description.update { action.description }
+            is NoteAction.OnTitleChange -> title.update { action.title }
+            is NoteAction.LoadInitialNote -> if (action.id == null) {
+                title.update { "" }
+                description.update { "" }
+                editMode.update { true }
+            } else {
+                // search in local db
+                title.update { "Note From Local DB" }
+                description.update { "Description From Local DB" }
             }
 
             NoteAction.EnterEditMode -> editMode.update { true }
+            NoteAction.OnDiscardNote -> {
+                // delete newly created note
+                viewModelScope.launch {
+                    eventChannel.send(NoteEvent.DismissNote)
+                }
+            }
         }
     }
 }
