@@ -56,8 +56,8 @@ class NoteViewModel : ViewModel() {
             is NoteAction.OnDescriptionChange -> description.update { action.description }
             is NoteAction.OnTitleChange -> title.update { action.title }
             is NoteAction.LoadInitialNote -> if (action.id == null) {
-                title.update { "" }
-                description.update { "" }
+                title.update { _state.value.title }
+                description.update { _state.value.description }
                 editMode.update { true }
             } else {
                 // search in local db
