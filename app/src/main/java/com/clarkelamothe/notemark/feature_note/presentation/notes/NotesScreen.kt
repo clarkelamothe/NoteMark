@@ -72,7 +72,7 @@ fun NotesScreen(
             NoteMarkTopBar(
                 title = "NoteMark",
                 actions = {
-                    ProfileIcon(initials = "PL") {}
+                    ProfileIcon(initials = state.initials) {}
                 },
                 titlePadding = when (orientation) {
                     Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> PaddingValues(0.dp)
