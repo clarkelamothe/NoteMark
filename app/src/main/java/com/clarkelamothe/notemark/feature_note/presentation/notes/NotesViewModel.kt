@@ -53,7 +53,6 @@ class NotesViewModel(
 
     fun onAction(action: NotesAction) {
         when (action) {
-            NotesAction.OnCreateNote -> TODO()
             NotesAction.OnDeleteNote -> TODO()
             else -> {} /* No-op */
         }

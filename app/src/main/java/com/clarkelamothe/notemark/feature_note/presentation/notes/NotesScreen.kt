@@ -46,6 +46,7 @@ fun NotesScreenRoot(
             when (action) {
                 NotesAction.OnLongClickNote -> showDialog = true
                 NotesAction.OnClickNote -> onGoToNote()
+                NotesAction.OnCreateNote -> onGoToNote()
                 else -> {} /* No-op */
             }
             viewModel.onAction(action)

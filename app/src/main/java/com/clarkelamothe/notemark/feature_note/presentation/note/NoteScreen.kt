@@ -30,13 +30,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.clarkelamothe.notemark.R
 import com.clarkelamothe.notemark.core.presentation.designsystem.appbar.NoteMarkTopBar
 import com.clarkelamothe.notemark.core.presentation.local.LocalOrientation
 import com.clarkelamothe.notemark.core.presentation.local.Orientation
 import com.clarkelamothe.notemark.core.presentation.theme.NoteMarkTheme
+import com.clarkelamothe.notemark.feature_note.presentation.component.CreateNoteForm
 import com.clarkelamothe.notemark.feature_note.presentation.component.NoteMarkDialog
 import org.koin.androidx.compose.koinViewModel
 
@@ -112,29 +112,25 @@ fun NoteScreen(
     ) {
         when (orientation) {
             Orientation.PHONE_PORTRAIT, Orientation.TABLET_PORTRAIT -> {
-                Column(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                        .padding(it)
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            end = 16.dp
-                        ),
-                        text = state.title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                when (state.isEditMode) {
+                    true -> CreateNoteForm(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                            .padding(it)
+                            .fillMaxSize(),
+                        title = state.title,
+                        description = state.description,
+                        {},
+                        {}
                     )
-                    HorizontalDivider()
-                    Text(
-                        modifier = Modifier.padding(
-                            end = 16.dp
-                        ),
-                        text = state.description,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+
+                    else -> NoteScreenContent(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                            .padding(it)
+                            .fillMaxSize(),
+                        title = state.title,
+                        description = state.description
                     )
                 }
             }
@@ -147,27 +143,25 @@ fun NoteScreen(
                         .fillMaxSize(),
                     contentAlignment = Alignment.TopCenter
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .width(540.dp)
-                            .offset(y = (-24).dp),
-                        verticalArrangement = Arrangement.spacedBy(20.dp)
-                    ) {
-                        Text(
+                    when (state.isEditMode) {
+                        true -> CreateNoteForm(
                             modifier = Modifier
-                                .padding(
-                                    end = 16.dp
-                                )
-                                .zIndex(Float.MAX_VALUE),
-                            text = state.title,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                                .width(540.dp)
+                                .offset(y = (-24).dp)
+                                .fillMaxSize(),
+                            title = state.title,
+                            description = state.description,
+                            {},
+                            {}
                         )
-                        HorizontalDivider()
-                        Text(
-                            text = state.description,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+
+                        else -> NoteScreenContent(
+                            modifier = Modifier
+                                .width(540.dp)
+                                .offset(y = (-24).dp)
+                                .fillMaxSize(),
+                            title = state.title,
+                            description = state.description
                         )
                     }
                 }
@@ -175,6 +169,30 @@ fun NoteScreen(
 
             Orientation.DESKTOP, null -> TODO()
         }
+    }
+}
+
+@Composable
+private fun NoteScreenContent(
+    modifier: Modifier = Modifier,
+    title: String,
+    description: String
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        HorizontalDivider()
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
