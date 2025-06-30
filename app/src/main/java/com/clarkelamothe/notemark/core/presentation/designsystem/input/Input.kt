@@ -45,6 +45,8 @@ fun NoteMarkInputTextField(
 ) {
     val focusRequester = remember { FocusRequester() }
     var showSupportedText by remember { mutableStateOf(false) }
+    var showPlaceholder by remember { mutableStateOf(false) }
+    var valueChanging by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -61,9 +63,12 @@ fun NoteMarkInputTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester)
-                .onFocusChanged { showSupportedText = !it.isFocused && isError },
+                .onFocusChanged {
+                    valueChanging = false
+                    showSupportedText = !it.isFocused && isError
+                },
             value = value,
-            isError = isError,
+            isError = isError && !valueChanging,
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Color.Transparent,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
@@ -88,16 +93,21 @@ fun NoteMarkInputTextField(
             ),
             trailingIcon = trailingIcon,
             placeholder = {
-                Text(
-                    text = placeholder,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                if (showPlaceholder) {
+                    Text(
+                        text = placeholder,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             },
             singleLine = true,
             label = null,
             shape = RoundedCornerShape(12.dp),
-            onValueChange = onValueChange,
+            onValueChange = {
+                valueChanging = true
+                onValueChange(it)
+            },
             visualTransformation = visualTransformation,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
